@@ -22,26 +22,29 @@ startWindow::startWindow(QWidget *parent)
     QObject::connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
 
     this->setLayout(mainGrid);
+
+    calc = new calculatorQuadratic(this);
+    calc->setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);//запустить отдельным окном
+
+    calcTriangle = new calculatorTriangle(this);
+    calcTriangle->setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
+
+    planeTxt = new planeText(this);
+    planeTxt->setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
 }
 
 void startWindow::buttonOne_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 1");
-    msgBox.exec();
+    calc->show();
 }
 
 void startWindow::buttonTwo_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 2");
-    msgBox.exec();
+    calcTriangle->show();
 }
 
 void startWindow::buttonThree_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 3");
-    msgBox.exec();
+    planeTxt->show();
 }
 

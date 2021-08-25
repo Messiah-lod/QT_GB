@@ -6,6 +6,10 @@
 #include <QPushButton>
 #include <QMessageBox>
 
+#include "calculatorquadratic.h"
+#include "calculatortriangle.h"
+#include "planetext.h"
+
 class startWindow : public QWidget
 {
     Q_OBJECT
@@ -17,6 +21,9 @@ public:
     QPushButton *buttonTwo;
     QPushButton *buttonThree;
 
+    calculatorQuadratic *calc;
+    calculatorTriangle *calcTriangle;
+    planeText *planeTxt;
 
  public slots:
 
