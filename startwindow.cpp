@@ -22,26 +22,27 @@ startWindow::startWindow(QWidget *parent)
     QObject::connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
 
     this->setLayout(mainGrid);
+
+    valute = new insertValute(this);
+    valute->setWindowFlags(Qt::Window);
+    viewlanguage = new ViewLanguage(this);
+    viewlanguage->setWindowFlags(Qt::Window);
+    computerview = new ComputerView(this);
+    computerview->setWindowFlags(Qt::Window);
 }
 
 void startWindow::buttonOne_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 1");
-    msgBox.exec();
+    valute->show();
 }
 
 void startWindow::buttonTwo_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 2");
-    msgBox.exec();
+    viewlanguage->show();
 }
 
 void startWindow::buttonThree_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 3");
-    msgBox.exec();
+    computerview->show();
 }
 
