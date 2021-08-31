@@ -13,9 +13,12 @@ startWindow::startWindow(QWidget *parent)
     buttonTwo->setText("Задание 2");
     buttonThree->setText("Задание 3");
 
+    parsehtml = new ParseHtml(this);
+    parsehtml->setWindowFlags(Qt::Window);
+
     mainGrid->addWidget(buttonOne, 1, 1, 1, 1);
-    mainGrid->addWidget(buttonTwo, 3,1,1,1);
-    mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
+//    mainGrid->addWidget(buttonTwo, 3,1,1,1);
+//    mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
 
     QObject::connect(buttonOne, SIGNAL(clicked()), this, SLOT(buttonOne_clicked()));
     QObject::connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
@@ -26,9 +29,7 @@ startWindow::startWindow(QWidget *parent)
 
 void startWindow::buttonOne_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 1");
-    msgBox.exec();
+    parsehtml->show();
 }
 
 void startWindow::buttonTwo_clicked()
