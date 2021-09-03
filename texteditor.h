@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QMessageBox>
 
+#include "settings.h"
+
 class TextEditor : public QWidget
 {
     Q_OBJECT
@@ -15,31 +17,34 @@ public:
 private:
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
 
-    QPushButton *buttonOpen;
+    QToolButton *buttonOpen;
+    QAction *openAct;
+    QAction *openReadAct;
+
     QPushButton *buttonSave;
     QPushButton *buttonHelp;
+    QPushButton *buttonSettings;
 
     QPlainTextEdit *editor;
 
-    QCheckBox *cbDark;
+    Settings *setting;
 
-    QString qss = "QWidget{""background-color: rgb(239, 239, 239);""}"
-                  "QPlainTextEdit{""background-color: rgb(255, 255, 255);""border-color: rgb(0, 179, 255);""border: 5px solid rgb(0, 179, 255);""}"
-                  "QPushButton{""border-radius: 00px;""background-color: rgb(239, 239, 239);""qproperty-iconSize: 28px 28px;""}"
-                  "QPushButton:pressed{"" border-radius: 10px;""background-color: rgb(0, 179, 255);""}";
+protected:
+//    virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
+ //   virtual void mouseReleaseEvent(QMouseEvent *event) override; // событие при отжатии кнопки мыши
+//    virtual void mouseMoveEvent(QMouseEvent *event) override;    // событие при перемещении курсора
+    virtual void keyPressEvent(QKeyEvent *event) override;       // событие при нажатии клавиши клавиатуры
+//    virtual void keyReleaseEvent(QKeyEvent *event) override;     // событие при отжатии клавиши клавиатуры
 
-    QString qssDark = "QWidget{""background-color: rgb(53, 53, 53);""text-color: rgb(255, 255, 255);""}"
-                  "QPlainTextEdit{""background-color: rgb(25, 25, 25);""border-color: rgb(0, 179, 255);"
-                      "             ""border: 5px solid rgb(0, 179, 255);""text-color: rgb(255, 255, 255);""}"
-                  "QPushButton{""border-radius: 00px;""background-color: rgb(53, 53, 53);""qproperty-iconSize: 28px 28px;""}"
-                  "QPushButton:pressed{"" border-radius: 10px;""background-color: rgb(0, 179, 255);""}";
 signals:
 
 public slots:
     void on_buttonOpen_clicked();
     void on_buttonSave_clicked();
     void on_buttonHelp_clicked();
-    void on_cbDark_clicked();
+    void on_buttonSettings_clicked();
+    void on_buttonOpenOnlyRead_clicked();
+    void retranslateUI();
 };
 
 #endif // TEXTEDITOR_H
