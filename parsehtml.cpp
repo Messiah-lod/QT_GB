@@ -61,19 +61,23 @@ void ParseHtml::on_openHtml_clicked() {
     }
 }
 
-QStringList ParseHtml::getParametr(QString _str){
+QStringList ParseHtml::getParametr(QString _str){ 
     //Найлем курс доллара
     QString strSearch = "https://news.mail.ru/currency/src/MOEX/charcode/USD/\",\"type\":\"USD\",\"rate\":";
-    int index = _str.indexOf(strSearch);
-    QString dol = "$ " + _str.mid(index + strSearch.size(),5);
+    auto index = _str.indexOf(strSearch);
+    auto indexLast = _str.indexOf(",", index + strSearch.size());
+    QString dol = "$ " + _str.mid(index + strSearch.size(), indexLast - index - strSearch.size());
+
     //Найдем курс евро
     strSearch = "https://news.mail.ru/currency/src/MOEX/charcode/EUR/\",\"type\":\"EUR\",\"rate\":";
     index = _str.indexOf(strSearch);
-    QString eur = "E " + _str.mid(index + strSearch.size(),5);
+    indexLast = _str.indexOf(",", index + strSearch.size());
+    QString eur = "E " + _str.mid(index + strSearch.size(),indexLast - index - strSearch.size());
+
     //Узнаем город и погоду в нем
-    strSearch = "https://pogoda.mail.ru/prognoz/" ; //ivanovo/\",\"now\":{\"temp\":\"";
+    strSearch = "https://pogoda.mail.ru/prognoz/" ;
     index = _str.indexOf(strSearch);
-    int indexLast = _str.indexOf("/", index + strSearch.size());
+    indexLast = _str.indexOf("/", index + strSearch.size());
     QString city = _str.mid(index + strSearch.size(), indexLast - index - strSearch.size());
     strSearch = "https://pogoda.mail.ru/prognoz/" + city + "/\",\"now\":{\"temp\":\"";
     index = _str.indexOf(strSearch);
