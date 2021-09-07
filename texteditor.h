@@ -29,6 +29,9 @@ private:
 
     Settings *setting;
 
+    unsigned int modifyOpen , modifySave, modifyClear, modifyExit;
+    int open, save, clear, exit;
+
 protected:
 //    virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
  //   virtual void mouseReleaseEvent(QMouseEvent *event) override; // событие при отжатии кнопки мыши
@@ -46,6 +49,10 @@ public slots:
     void on_buttonOpenOnlyRead_clicked();
     void retranslateUI();
     void redrawUI(QString _qss, QPalette _palette);
+    void swtHotKeyOpen(int _modify, int _key);
+    void swtHotKeySave(int _modify, int _key);
+    void swtHotKeyClear(int _modify, int _key);
+    void swtHotKeyExit(int _modify, int _key);
 };
 
 #endif // TEXTEDITOR_H

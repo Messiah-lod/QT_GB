@@ -9,8 +9,8 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/Icons/Icons/main.png"));
 
     TextEditor w;
-    w.setMinimumHeight(200);
-    w.setMinimumWidth(300);
+    w.setMinimumHeight(400);
+    w.setMinimumWidth(600);
     w.show();
 
     return a.exec();
