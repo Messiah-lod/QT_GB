@@ -28,7 +28,7 @@ private:
     QPlainTextEdit *editor;
 
     Settings *setting;
-
+    QKeyCombination *keyCombination;
 protected:
 //    virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
  //   virtual void mouseReleaseEvent(QMouseEvent *event) override; // событие при отжатии кнопки мыши

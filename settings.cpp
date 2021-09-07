@@ -24,8 +24,6 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
                               "QToolButton:pressed{"" border-radius: 10px;""background-color: rgb(0, 179, 255);""}";
 
 
-
-
     // Настраиваем палитру для цветовых ролей элементов интерфейса
     darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
@@ -41,19 +39,27 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
+    palette = style()->standardPalette();
+
     QObject::connect(cbDark, SIGNAL(clicked()), this, SLOT(on_cbDark_clicked()));
     QObject::connect(cbLanguage, SIGNAL(clicked()), this, SLOT(on_cbLanguage_clicked()));
 
     mainGrid->addWidget(cbDark, 0, 0);
     mainGrid->addWidget(cbLanguage, 1, 0);
 
-    qApp->setPalette(style()->standardPalette());
-    qApp->setStyleSheet(qss);
+    qApp->setPalette(palette);
+    this->setStyleSheet(getQss());
 
     this->setLayout(mainGrid);
 
     retranslateUI();
+    redrawUI(qss, palette);
+}
 
+QString Settings::getQss()
+{
+    if (cbDark->isChecked()) return qssDark;
+    else return qss;
 }
 
 void Settings::on_cbDark_clicked()
@@ -61,21 +67,20 @@ void Settings::on_cbDark_clicked()
     if (cbDark->isChecked()){
         // Устанавливаем данную палитру на приложение
         qApp->setPalette(darkPalette);
-        qApp->setStyleSheet(qssDark);
+        emit redraw(qssDark, darkPalette);
     }
     else{
         // Для возврата к светлой палитре достаточно
         // будет установить стандартную палитру из темы оформления
          qApp->setPalette(style()->standardPalette());
-         qApp->setStyleSheet(qss);
+         emit redraw(qss, palette);
     }
 }
 
-void Settings::on_cbLanguage_clicked()
-{
+void Settings::on_cbLanguage_clicked() {
     if (cbLanguage->isChecked()){//русский
         translator = new QTranslator;
-        translator->load(":/translator/RU_tu.qm");
+        static_cast<void>(translator->load(":/translator/RU_tu.qm"));
         qApp->installTranslator(translator);
         emit retranslate();
     }
@@ -85,11 +90,15 @@ void Settings::on_cbLanguage_clicked()
     }
 }
 
-void Settings::retranslateUI()
-{
+void Settings::retranslateUI() {
     cbDark->setText(tr("Dark theme"));
     cbLanguage->setText(tr("Set Russian Language"));
     this->setWindowTitle(tr("Settings"));
+}
+
+void Settings::redrawUI(QString _qss, QPalette _palette) {
+    this->setStyleSheet(_qss);
+    this->setPalette(_palette);
 }
 
 

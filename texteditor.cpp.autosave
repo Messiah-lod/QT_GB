@@ -27,6 +27,7 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
     buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     editor = new QPlainTextEdit;
+    keyCombination = new QKeyCombination;
 
     mainGrid->addWidget(buttonOpen, 0, 0);
     mainGrid->addWidget(buttonSave, 0, 1);
@@ -65,7 +66,11 @@ void TextEditor::keyPressEvent(QKeyEvent *event)
         qApp->exit();
     }
     else{
-        QMessageBox::information(nullptr, tr("Help"), QString(QChar(event->key())));
+        QMessageBox::information(nullptr, tr("Help"), (event->key().toString()));
+        event->key();
+        event->keyCombination();
+ //       keyCombination->key();
+ //       keyCombination->keyboardModifiers();
     }
 }
 

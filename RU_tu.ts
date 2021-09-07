@@ -19,7 +19,7 @@
     <message>
         <location filename="settings.cpp" line="91"/>
         <source>Set Russian Language</source>
-        <translation>Вернуть английский язык</translation>
+        <translation>Установить английский язык</translation>
     </message>
     <message>
         <location filename="settings.cpp" line="92"/>
