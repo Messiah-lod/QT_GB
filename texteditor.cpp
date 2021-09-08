@@ -39,13 +39,13 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
     setting->setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
 
     modifyOpen = setting->getHotkey()[0];
-    open = setting->getHotkey()[1];
+    open = static_cast<int>(setting->getHotkey()[1]);
     modifySave = setting->getHotkey()[2];
-    save = setting->getHotkey()[3];
+    save = static_cast<int>(setting->getHotkey()[3]);
     modifyClear = setting->getHotkey()[4];
-    clear = setting->getHotkey()[5];
+    clear = static_cast<int>(setting->getHotkey()[5]);
     modifyExit = setting->getHotkey()[6];
-    exit = setting->getHotkey()[7];
+    exit = static_cast<int>(setting->getHotkey()[7]);
 
     this->setLayout(mainGrid);
 
@@ -57,10 +57,10 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
     QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
     QObject::connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
     QObject::connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
-    QObject::connect(setting, SIGNAL(signal_changeOpen(int, int)), this, SLOT(swtHotKeyOpen(int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeSave(int, int)), this, SLOT(swtHotKeySave(int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeClear(int, int)), this, SLOT(swtHotKeyClear(int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeExit(int, int)), this, SLOT(swtHotKeyExit(int, int)));
+    QObject::connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
+    QObject::connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
+    QObject::connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
+    QObject::connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
 
     this->setStyleSheet(setting->getQss());
 
@@ -69,23 +69,19 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
 
 void TextEditor::keyPressEvent(QKeyEvent *event)
 {
- //   if((QApplication::keyboardModifiers() & event->modifiers()) == modifyOpen);
-
-
- //   editor->appendPlainText(QString::number(event->modifiers()) + "+" + QString::number(event->key()));
     if( (event->modifiers() == modifyOpen && event->key() == open) ||
             (modifyOpen == 0 && event->key() == open)){
         on_buttonOpen_clicked();
     }
-    if ( ((event->modifiers() ==  modifySave) && event->key() == save) ||
+    else if ( ((event->modifiers() ==  modifySave) && event->key() == save) ||
                (modifySave == 0 && event->key() == save)){
         on_buttonSave_clicked();
     }
-    if ( ((event->modifiers() ==  modifyClear) && event->key() == clear) ||
+    else if ( ((event->modifiers() ==  modifyClear) && event->key() == clear) ||
                 (modifyClear == 0 && event->key() == clear)){
         editor->clear();
     }
-    if ( ((event->modifiers() == modifyExit) && event->key() == exit) ||
+    else if ( ((event->modifiers() == modifyExit) && event->key() == exit) ||
                 (modifyExit == 0 && event->key() == exit)){
         qApp->exit();
     }
@@ -173,26 +169,22 @@ void TextEditor::redrawUI(QString _qss, QPalette _palette)
     setting->redrawUI(_qss, _palette);
 }
 
-void TextEditor::swtHotKeyOpen(int _modify, int _key)
+void TextEditor::swtHotKeyOpen(unsigned int _modify, int _key)
 {
     open = _key; modifyOpen = _modify;
-//    editor->appendPlainText(QString::number(_modify) + "+" + QString::number(_key));
 }
 
-void TextEditor::swtHotKeySave(int _modify, int _key)
+void TextEditor::swtHotKeySave(unsigned int _modify, int _key)
 {
     save = _key; modifySave = _modify;
- //     editor->appendPlainText(QString::number(_modify) + "+" + QString::number(_key));
 }
 
-void TextEditor::swtHotKeyClear(int _modify, int _key)
+void TextEditor::swtHotKeyClear(unsigned int _modify, int _key)
 {
     clear = _key; modifyClear = _modify;
- //      editor->appendPlainText(QString::number(_modify) + "+" + QString::number(_key));
 }
 
-void TextEditor::swtHotKeyExit(int _modify, int _key)
+void TextEditor::swtHotKeyExit(unsigned int _modify, int _key)
 {
     exit = _key; modifyExit = _modify;
-//      editor->appendPlainText(QString::number(_modify) + "+" + QString::number(_key));
 }

@@ -49,10 +49,10 @@ public slots:
     void on_buttonOpenOnlyRead_clicked();
     void retranslateUI();
     void redrawUI(QString _qss, QPalette _palette);
-    void swtHotKeyOpen(int _modify, int _key);
-    void swtHotKeySave(int _modify, int _key);
-    void swtHotKeyClear(int _modify, int _key);
-    void swtHotKeyExit(int _modify, int _key);
+    void swtHotKeyOpen(unsigned int _modify, int _key);
+    void swtHotKeySave(unsigned int _modify, int _key);
+    void swtHotKeyClear(unsigned int _modify, int _key);
+    void swtHotKeyExit(unsigned int _modify, int _key);
 };
 
 #endif // TEXTEDITOR_H

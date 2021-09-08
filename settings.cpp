@@ -36,6 +36,10 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
 
 
     // Настраиваем палитру для цветовых ролей элементов интерфейса
+//    Active и Normal — компонент активен (окно находится в фокусе ввода);
+//    Disabled — компонент недоступен;
+//    Inactive — компонент неактивен (окно находится вне фокуса ввода).
+//    darkPalette.setColor(QPalette::Normal, QPalette::Window, QColor(53, 53, 53)); //без указания Normal применяется во всех трех режимах
     darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
     darkPalette.setColor(QPalette::Base, QColor(25, 25, 25));
@@ -105,18 +109,74 @@ QString Settings::getQss()
     else return qss;
 }
 
-QVector<int> Settings::getHotkey()
+QVector<unsigned int> Settings::getHotkey()
 {
-    QVector<int> hotkeys;
+    QVector<unsigned int> hotkeys;
     hotkeys.append(modifyOpen);
-    hotkeys.append(open);
+    hotkeys.append(static_cast<unsigned int>(open));
     hotkeys.append(modifySave);
-    hotkeys.append(save);
+    hotkeys.append(static_cast<unsigned int>(save));
     hotkeys.append(modifyClear);
-    hotkeys.append(clear);
-    hotkeys.append(exit);
+    hotkeys.append(static_cast<unsigned int>(clear));
     hotkeys.append(modifyExit);
+    hotkeys.append(static_cast<unsigned int>(exit));
     return hotkeys;
+}
+
+QString Settings::getNameKey(int _key)
+{
+  switch (_key) {
+    case Qt::ControlModifier: return "Ctrl";
+    case Qt::Key_F1: return "F1";
+    case Qt::Key_F2: return "F2";
+    case Qt::Key_F3: return "F3";
+    case Qt::Key_F4: return "F4";
+    case Qt::Key_F5: return "F5";
+    case Qt::Key_F6: return "F6";
+    case Qt::Key_F7: return "F7";
+    case Qt::Key_F8: return "F8";
+    case Qt::Key_F9: return "F9";
+    case Qt::Key_F10: return "F10";
+    case Qt::Key_F11: return "F11";
+    case Qt::Key_F12: return "F12";
+    case Qt::Key_0: return "0";
+    case Qt::Key_1: return "1";
+    case Qt::Key_2: return "2";
+    case Qt::Key_3: return "3";
+    case Qt::Key_4: return "4";
+    case Qt::Key_5: return "5";
+    case Qt::Key_6: return "6";
+    case Qt::Key_7: return "7";
+    case Qt::Key_8: return "8";
+    case Qt::Key_9: return "9";
+    case Qt::Key_A: return "A";
+    case Qt::Key_B: return "B";
+    case Qt::Key_C: return "C";
+    case Qt::Key_D: return "D";
+    case Qt::Key_E: return "E";
+    case Qt::Key_F: return "F";
+    case Qt::Key_G: return "G";
+    case Qt::Key_H: return "H";
+    case Qt::Key_I: return "I";
+    case Qt::Key_J: return "J";
+    case Qt::Key_K: return "K";
+    case Qt::Key_L: return "L";
+    case Qt::Key_M: return "M";
+    case Qt::Key_N: return "N";
+    case Qt::Key_O: return "O";
+    case Qt::Key_P: return "P";
+    case Qt::Key_Q: return "Q";
+    case Qt::Key_R: return "R";
+    case Qt::Key_S: return "S";
+    case Qt::Key_T: return "T";
+    case Qt::Key_U: return "U";
+    case Qt::Key_V: return "V";
+    case Qt::Key_W: return "W";
+    case Qt::Key_X: return "X";
+    case Qt::Key_Y: return "Y";
+    case Qt::Key_Z: return "Z";
+    default: return "";
+    }
 }
 
 void Settings::keyPressEvent(QKeyEvent *event)
@@ -125,48 +185,65 @@ void Settings::keyPressEvent(QKeyEvent *event)
     key = event->key();
     if(changeOpen){ 
         if(modify!= 0 && modifyOpen == 0) {
-            leOpen->setText(QString::number(modify)+ "+");
+            leOpen->setText(getNameKey(static_cast<int>(modify))+ "+");
             modifyOpen = modify;
         }
         else {
-            leOpen->setText((modifyOpen!= 0)?(leOpen->text() + QString::number(key)):(QString::number(key)));
             open = key;
             changeOpen = false;
-        }
-        emit signal_changeOpen(modifyOpen,open);
-    } else if(changeSave){
+            leOpen->setStyleSheet("");
+            qDebug() << "Испустили сигнал открыть" << modifyOpen << "___" << open << " от кнопки " << key << " с модификатором " << modify;
+            emit signal_changeOpen(modifyOpen,open);
+            leOpen->setText((modifyOpen!= 0)?(leOpen->text() + getNameKey(key)):(getNameKey(key)));
+        }    
+    }
+
+
+    else if(changeSave){
         if(modify!= 0 && modifySave == 0) {
             modifySave = modify;
-            leSave->setText(QString::number(modifySave)+ "+");
+            leSave->setText(getNameKey(static_cast<int>(modifySave))+ "+");
         }
         else {
             save = key;
-            leSave->setText((modifySave!= 0)?(leSave->text() + QString::number(save)):(QString::number(save)));
             changeSave = false;
+            leSave->setStyleSheet("");
+            qDebug() << "Испустили сигнал сохранить" << modifySave << "___" << save << " от кнопки " << key << " с модификатором " << modify;
+            emit signal_changeSave(modifySave,save);
+            leSave->setText((modifySave!= 0)?(leSave->text() + getNameKey(key)):(getNameKey(key)));
         }
-        emit signal_changeSave(modifySave,save);
-    } else if(changeClear){
+    }
+
+
+    else if(changeClear){
         if(modify!= 0 && modifyClear == 0) {
             modifyClear = modify;
-            leClear->setText(QString::number(modifyClear)+ "+");
+            leClear->setText(getNameKey(static_cast<int>(modifyClear))+ "+");
         }
         else {
              clear = key;
-            leClear->setText((modifyClear!= 0)?(leClear->text() + QString::number(clear)):(QString::number(clear)));
             changeClear = false;
+            leClear->setStyleSheet("");
+            qDebug() << "Испустили сигнал очистить" << modifyClear << "___" << clear << " от кнопки " << key << " с модификатором " << modify;
+            emit signal_changeClear(modifyClear,clear);
+            leClear->setText((modifyClear!= 0)?(leClear->text() + getNameKey(key)):(getNameKey(key)));
         }
-        emit signal_changeSave(modifyClear,clear);
-    } else if(changeExit){
+    }
+
+
+    else if(changeExit){
         if(modify!= 0 && modifyExit == 0) {
             modifyExit = modify;
-            leExit->setText(QString::number(modifyExit)+ "+");
+            leExit->setText(getNameKey(static_cast<int>(modifyExit))+ "+");
         }
         else {
             exit = key;
-            leExit->setText((modifyExit!= 0)?(leExit->text() + QString::number(exit)):(QString::number(exit)));
             changeExit = false;
+            leExit->setStyleSheet("");
+            qDebug() << "Испустили сигнал выход" << modifyExit << "___" << exit << " от кнопки " << key << " с модификатором " << modify;
+            emit signal_changeExit(modifyExit,exit);
+            leExit->setText((modifyExit!= 0)?(leExit->text() + getNameKey(key)):(getNameKey(key)));
         }
-        emit signal_changeSave(modifyExit,exit);
     }
 }
 
@@ -216,26 +293,52 @@ void Settings::redrawUI(QString _qss, QPalette _palette) {
 
 void Settings::leOpen_onTextEdit()
 {
+    qDebug() << "Сработало открыть";
     modifyOpen = open = 0;
     changeOpen = true;
+    changeClear = changeSave = changeExit = false;
+    leOpen->setStyleSheet("background-color: rgb(0, 179, 255)");
+    leSave->setStyleSheet("");
+    leClear->setStyleSheet("");
+    leExit->setStyleSheet("");
 }
 
 void Settings::leSave_onTextEdit()
 {
+    qDebug() << "Сработало сохранить";
     modifySave = save = 0;
     changeSave = true;
+    changeExit =  false;
+    changeOpen =  false;
+    modifyClear =  false;
+    leSave->setStyleSheet("background-color: rgb(0, 179, 255)");
+    leOpen->setStyleSheet("");
+    leClear->setStyleSheet("");
+    leExit->setStyleSheet("");
 }
 
 void Settings::leClear_onTextEdit()
 {
+    qDebug() << "Сработало очистить";
     modifyClear = clear = 0;
     changeClear = true;
+    changeOpen = changeSave = changeExit = false;
+    leClear->setStyleSheet("background-color: rgb(0, 179, 255)");
+    leOpen->setStyleSheet("");
+    leSave->setStyleSheet("");
+    leExit->setStyleSheet("");
 }
 
 void Settings::leExit_onTextEdit()
 {
+    qDebug() << "Сработало выход";
     modifyExit = exit = 0;
     changeExit = true;
+    changeOpen = changeSave = changeClear = false;
+    leExit->setStyleSheet("background-color: rgb(0, 179, 255)");
+    leOpen->setStyleSheet("");
+    leSave->setStyleSheet("");
+    leClear->setStyleSheet("");
 }
 
 

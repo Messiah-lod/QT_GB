@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QDebug>
 
 class Settings : public QWidget
 {
@@ -12,7 +13,7 @@ class Settings : public QWidget
 public:
     explicit Settings(QWidget *parent = nullptr);
     QString getQss();
-    QVector<int> getHotkey();
+    QVector<unsigned int> getHotkey();
 
 private:
         QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
@@ -40,26 +41,23 @@ private:
         QLabel *lbExit;
         QLineEdit *leExit;
 
-        int key, modify;
-        bool changeOpen;
-        int open, modifyOpen;
-        bool changeSave;
-        int save, modifySave;
-        bool changeClear;
-        int clear, modifyClear;
-        bool changeExit;
-        int exit, modifyExit;
+        int key, open, save, clear, exit;
+        unsigned int modify, modifyOpen, modifySave, modifyClear, modifyExit;
+        bool changeOpen, changeSave, changeClear, changeExit;
+
+        QString getNameKey(int _key);
 
 protected:
         virtual void keyPressEvent(QKeyEvent *event) override;
+ //       virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
 
 signals:
         void retranslate();
         void redraw(QString, QPalette);
-        void signal_changeOpen(int,int);
-        void signal_changeSave(int,int);
-        void signal_changeClear(int,int);
-        void signal_changeExit(int,int);
+        void signal_changeOpen(unsigned int,int);
+        void signal_changeSave(unsigned int,int);
+        void signal_changeClear(unsigned int,int);
+        void signal_changeExit(unsigned int,int);
 
 public slots:
         void on_cbDark_clicked();
