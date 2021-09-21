@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QMessageBox>
 
+#include "explorer.h"
+
 class startWindow : public QWidget
 {
     Q_OBJECT
@@ -16,6 +18,8 @@ public:
     QPushButton *buttonOne;
     QPushButton *buttonTwo;
     QPushButton *buttonThree;
+
+    Explorer *exp;
 
 
  public slots:
