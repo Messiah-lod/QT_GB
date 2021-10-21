@@ -5,32 +5,62 @@
 #include <QtGui>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QMainWindow>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QMdiArea>
 
 #include "settings.h"
+#include "finedialog.h"
 
-class TextEditor : public QWidget
+class TextEditor : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit TextEditor(QWidget *parent = nullptr);
 
 private:
+    QWidget *centralWgt;
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
 
     QToolButton *buttonOpen;
-    QAction *openAct;
     QAction *openReadAct;
 
     QPushButton *buttonSave;
+    QPushButton *buttonPrint;
     QPushButton *buttonHelp;
     QPushButton *buttonSettings;
 
-    QPlainTextEdit *editor;
-
     Settings *setting;
+    FineDialog *find;
+
+    QMenuBar *menubar;
+    QMenu *fileMenu;
+    QMenu *editMenu;
+    QMenu *helpMenu;
+    QAction *actionFileCreate;
+    QAction *actionFileOpen;
+    QAction *actionFileSave;
+    QAction *actionFilePrint;
+    QAction *actionFileExit;
+    QAction *actionEditFind;
+    QAction *actionEditSetings;
+    QAction *actionHelpAbout;
 
     unsigned int modifyOpen , modifySave, modifyClear, modifyExit;
     int open, save, clear, exit;
+
+    QTabWidget *tabArea;
+
+    bool setOnlyReadText = false;
+
+    void closeEvent(QCloseEvent * event) override;
+    QMessageBox *messExit;
+    QPushButton *yes;
+    QPushButton *no;
+    QMessageBox *messTabClose;
+    QPushButton *yesClose;
+    QPushButton *noClose;
 
 protected:
 //    virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
@@ -47,12 +77,21 @@ public slots:
     void on_buttonHelp_clicked();
     void on_buttonSettings_clicked();
     void on_buttonOpenOnlyRead_clicked();
+    void on_buttonCreateNew_clicked();
     void retranslateUI();
     void redrawUI(QString _qss, QPalette _palette);
     void swtHotKeyOpen(unsigned int _modify, int _key);
     void swtHotKeySave(unsigned int _modify, int _key);
     void swtHotKeyClear(unsigned int _modify, int _key);
     void swtHotKeyExit(unsigned int _modify, int _key);
+    void findText();                    // Слот вызова поиска
+    void setNewPosition(int, int, int); // Слот на обработку выделения текста и установки указателя
+    void on_actionFilePrint_clicked();
+    void changeTabArea();
+    void closeTabArea(int _tab);
+    void planeTxtChange();
+
+
 };
 
 #endif // TEXTEDITOR_H

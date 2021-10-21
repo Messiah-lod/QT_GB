@@ -14,6 +14,7 @@ public:
     explicit Settings(QWidget *parent = nullptr);
     QString getQss();
     QVector<unsigned int> getHotkey();
+    QPalette getPalette();
 
 private:
         QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
@@ -46,6 +47,7 @@ private:
         bool changeOpen, changeSave, changeClear, changeExit;
 
         QString getNameKey(int _key);
+
 
 protected:
         virtual void keyPressEvent(QKeyEvent *event) override;

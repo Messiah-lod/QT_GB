@@ -109,6 +109,12 @@ QString Settings::getQss()
     else return qss;
 }
 
+QPalette Settings::getPalette()
+{
+    if (cbDark->isChecked()) return darkPalette;
+    else return style()->standardPalette();
+}
+
 QVector<unsigned int> Settings::getHotkey()
 {
     QVector<unsigned int> hotkeys;
