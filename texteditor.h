@@ -20,6 +20,10 @@ public:
     explicit TextEditor(QWidget *parent = nullptr);
 
 private:
+    void closeEvent(QCloseEvent * event) override;
+    void inline createButton();
+    void inline createMenu();
+
     QWidget *centralWgt;
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
 
@@ -30,6 +34,11 @@ private:
     QPushButton *buttonPrint;
     QPushButton *buttonHelp;
     QPushButton *buttonSettings;
+    QPushButton *actionTextSelect;
+    QPushButton *actionTextFormat;
+    QPushButton *actionTextLeft;
+    QPushButton *actionTextCentre;
+    QPushButton *actionTextRight;
 
     Settings *setting;
     FineDialog *find;
@@ -38,6 +47,9 @@ private:
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *helpMenu;
+    QToolBar *fileToolBar;
+    QToolBar *formatTextToolBar;
+    QToolBar *aboutToolBar;
     QAction *actionFileCreate;
     QAction *actionFileOpen;
     QAction *actionFileSave;
@@ -54,13 +66,17 @@ private:
 
     bool setOnlyReadText = false;
 
-    void closeEvent(QCloseEvent * event) override;
     QMessageBox *messExit;
     QPushButton *yes;
     QPushButton *no;
     QMessageBox *messTabClose;
     QPushButton *yesClose;
     QPushButton *noClose;
+
+    QFont m_font;
+    QTextCharFormat m_fmt;
+    bool isCopyTextFormat = false;
+    bool processSelected = false;
 
 protected:
 //    virtual void mousePressEvent(QMouseEvent *event) override;   // событие при нажатии кнопки мыши
@@ -89,9 +105,16 @@ public slots:
     void on_actionFilePrint_clicked();
     void changeTabArea();
     void closeTabArea(int _tab);
+
     void planeTxtChange();
+    void planeSelectionChange(bool select);
+    void planeMoveCursor();
 
-
+    void on_actionTextSelect_clicked();
+    void on_actionTextFormat_clicked();
+    void on_actionTextLeft_clicked();
+    void on_actionTextCentre_clicked();
+    void on_actionTextRight_clicked();
 };
 
 #endif // TEXTEDITOR_H

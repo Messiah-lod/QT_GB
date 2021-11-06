@@ -4,10 +4,8 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
 {
     tabArea = new QTabWidget(this);
     tabArea->setMovable(true);
-//    tabArea->setTabShape(QTabWidget::Triangular);
     tabArea->setTabsClosable(true);
     tabArea->setUsesScrollButtons(true);
-//    tabArea->setDocumentMode(true); //????? покурить различия
 
     //Диалог выхода из программы
     messExit = new QMessageBox();
@@ -16,7 +14,6 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     no = new QPushButton();
     messExit->addButton(no, QMessageBox::NoRole);
 
-
     messTabClose = new QMessageBox();
     yesClose = new QPushButton();
     noClose = new QPushButton();
@@ -24,40 +21,13 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     messTabClose->addButton(noClose, QMessageBox::NoRole);
 
     mainGrid = new QGridLayout;
+    mainGrid->setContentsMargins(0,0,0,0);
     centralWgt = new QWidget;
-    openReadAct = new QAction(this);
-    actionFileOpen = new QAction(this);
+    mainGrid->addWidget(tabArea, 0, 0, 1, 6);
 
-    buttonOpen = new QToolButton;
-    buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
-    buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    buttonOpen->setPopupMode(QToolButton::MenuButtonPopup);
-    buttonOpen->addAction(actionFileOpen);
-    buttonOpen->addAction(openReadAct);
-    buttonOpen->setFixedSize(46, 30);
 
-    buttonSave = new QPushButton;
-    buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
-    buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    createButton();  //create ALL BUTTON
 
-    buttonPrint = new QPushButton;
-    buttonPrint->setIcon(QIcon(":/Icons/Icons/print.png"));
-    buttonPrint->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    buttonHelp = new QPushButton;
-    buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
-    buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    buttonSettings = new QPushButton;
-    buttonSettings->setIcon(QIcon(":/Icons/Icons/setings.png"));
-    buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    mainGrid->addWidget(buttonOpen, 0, 0);
-    mainGrid->addWidget(buttonSave, 0, 1);
-    mainGrid->addWidget(buttonPrint, 0, 2);
-    mainGrid->addWidget(buttonSettings, 0, 4);
-    mainGrid->addWidget(buttonHelp, 0, 5);
-    mainGrid->addWidget(tabArea, 1, 0, 1, 6);
 
     setting = new Settings(this);
     setting->setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
@@ -77,69 +47,15 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     this->setCentralWidget(centralWgt);
 
 
-//Создадим меню основного окна *********
-    menubar = new QMenuBar(this);
-
-    fileMenu = new QMenu(menubar);
-    editMenu = new QMenu(menubar);
-    helpMenu = new QMenu(menubar);
-
-    actionFileCreate = new QAction(this);
-    actionFileCreate->setIcon(QIcon(":/Icons/Icons/main.png"));
-
-    actionFileOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
-    actionFileSave = new QAction(this);
-    actionFileSave->setIcon(QIcon(":/Icons/Icons/save.png"));
-    actionFilePrint = new QAction(this);
-    actionFilePrint->setIcon(QIcon(":/Icons/Icons/print.png"));
-    actionFileExit = new QAction(this);
-    actionFileExit->setIcon(QIcon(":/Icons/Icons/cancel.png"));
-    actionEditSetings = new QAction(this);
-    actionEditSetings->setIcon(QIcon(":/Icons/Icons/setings.png"));
-    actionEditFind = new QAction(this);
-    actionEditFind->setIcon(QIcon(":/Icons/Icons/find.png"));
-    actionHelpAbout = new QAction(this);
-    actionHelpAbout->setIcon(QIcon(":/Icons/Icons/help.png"));
-
-    menubar->addAction(fileMenu->menuAction());
-    menubar->addAction(editMenu->menuAction());
-    menubar->addAction(helpMenu->menuAction());
-
-    fileMenu->addAction(actionFileCreate);
-    fileMenu->addAction(actionFileOpen);
-    fileMenu->addAction(actionFileSave);
-    fileMenu->addAction(actionFilePrint);
-    fileMenu->addSeparator();
-    fileMenu->addAction(actionFileExit);
-    editMenu->addAction(actionEditSetings);
-    editMenu->addAction(actionEditFind);
-    helpMenu->addAction(actionHelpAbout);
-
-    this->setMenuBar(menubar);
-//***************
+    createMenu(); //Create MENU
 
 
-    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
-    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
-    QObject::connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
-    QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
     QObject::connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
     QObject::connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
     QObject::connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
     QObject::connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
     QObject::connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
     QObject::connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
-
-    QObject::connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
-    QObject::connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
-    QObject::connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
-    QObject::connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
-    QObject::connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
-    QObject::connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
 
     QObject::connect(tabArea, SIGNAL(currentChanged(int)), this, SLOT(changeTabArea())); //активна новая вкладка
     QObject::connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabArea(int)));//нажата кнопка закрытия вкладки
@@ -163,6 +79,143 @@ void TextEditor::closeEvent(QCloseEvent *event)
         }
 }
 
+void TextEditor::createButton()
+{
+    buttonOpen = new QToolButton;
+    buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
+    buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    buttonOpen->setPopupMode(QToolButton::MenuButtonPopup);
+    openReadAct = new QAction(this);
+    actionFileOpen = new QAction(this);
+    buttonOpen->addAction(actionFileOpen);
+    buttonOpen->addAction(openReadAct);
+    buttonOpen->setFixedSize(46, 30);
+    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
+    QObject::connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
+
+    buttonSave = new QPushButton;
+    buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
+    buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
+
+    buttonPrint = new QPushButton;
+    buttonPrint->setIcon(QIcon(":/Icons/Icons/print.png"));
+    buttonPrint->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
+
+    buttonHelp = new QPushButton;
+    buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
+    buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
+
+    buttonSettings = new QPushButton;
+    buttonSettings->setIcon(QIcon(":/Icons/Icons/setings.png"));
+    buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
+
+    actionTextSelect = new QPushButton;
+    actionTextSelect->setIcon(QIcon(":/Icons/Icons/031-type.png"));
+    actionTextSelect->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(actionTextSelect, SIGNAL(clicked()), this, SLOT(on_actionTextSelect_clicked()));
+
+    actionTextFormat = new QPushButton;
+    actionTextFormat->setIcon(QIcon(":/Icons/Icons/061-highlighter.png"));
+    actionTextFormat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(actionTextFormat, SIGNAL(clicked()), this, SLOT(on_actionTextFormat_clicked()));
+
+    actionTextLeft = new QPushButton;
+    actionTextLeft->setIcon(QIcon(":/Icons/Icons/045-align-left-1.png"));
+    actionTextLeft->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(actionTextLeft, SIGNAL(clicked()), this, SLOT(on_actionTextLeft_clicked()));
+
+    actionTextCentre = new QPushButton;
+    actionTextCentre->setIcon(QIcon(":/Icons/Icons/046-align-center-1.png"));
+    actionTextCentre->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(actionTextCentre, SIGNAL(clicked()), this, SLOT(on_actionTextCentre_clicked()));
+
+    actionTextRight = new QPushButton;
+    actionTextRight->setIcon(QIcon(":/Icons/Icons/047-right-alignment-1.png"));
+    actionTextRight->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(actionTextRight, SIGNAL(clicked()), this, SLOT(on_actionTextRight_clicked()));
+}
+
+void TextEditor::createMenu()
+{
+    //Создадим меню основного окна *********
+        menubar = new QMenuBar(this);
+
+        fileMenu = new QMenu(menubar);
+        editMenu = new QMenu(menubar);
+        helpMenu = new QMenu(menubar);
+
+        actionFileCreate = new QAction(this);
+        actionFileCreate->setIcon(QIcon(":/Icons/Icons/main.png"));
+        QObject::connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
+
+        actionFileOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
+        QObject::connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
+
+        actionFileSave = new QAction(this);
+        actionFileSave->setIcon(QIcon(":/Icons/Icons/save.png"));
+        QObject::connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
+
+        actionFilePrint = new QAction(this);
+        actionFilePrint->setIcon(QIcon(":/Icons/Icons/print.png"));
+        QObject::connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
+
+        actionFileExit = new QAction(this);
+        actionFileExit->setIcon(QIcon(":/Icons/Icons/cancel.png"));
+        QObject::connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+
+        actionEditSetings = new QAction(this);
+        actionEditSetings->setIcon(QIcon(":/Icons/Icons/setings.png"));
+        QObject::connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
+
+        actionEditFind = new QAction(this);
+        actionEditFind->setIcon(QIcon(":/Icons/Icons/find.png"));
+        QObject::connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
+
+        actionHelpAbout = new QAction(this);
+        actionHelpAbout->setIcon(QIcon(":/Icons/Icons/help.png"));
+        QObject::connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
+
+        menubar->addAction(fileMenu->menuAction());
+        menubar->addAction(editMenu->menuAction());
+        menubar->addAction(helpMenu->menuAction());
+
+        fileMenu->addAction(actionFileCreate);
+        fileMenu->addAction(actionFileOpen);
+        fileMenu->addAction(actionFileSave);
+        fileMenu->addAction(actionFilePrint);
+        fileMenu->addSeparator();
+        fileMenu->addAction(actionFileExit);
+        editMenu->addAction(actionEditSetings);
+        editMenu->addAction(actionEditFind);
+        helpMenu->addAction(actionHelpAbout);
+
+        this->setMenuBar(menubar);
+
+        fileToolBar = new QToolBar;
+        this->addToolBar(fileToolBar);
+        fileToolBar->setOrientation(Qt::Horizontal);
+        fileToolBar->addWidget(buttonOpen);
+        fileToolBar->addWidget(buttonSave);
+        fileToolBar->addWidget(buttonPrint);
+
+        formatTextToolBar = new QToolBar;
+        this->addToolBar(formatTextToolBar);
+        formatTextToolBar->addWidget(actionTextSelect);
+        formatTextToolBar->addWidget(actionTextFormat);
+        formatTextToolBar->addWidget(actionTextLeft);
+        formatTextToolBar->addWidget(actionTextCentre);
+        formatTextToolBar->addWidget(actionTextRight);
+
+        aboutToolBar = new QToolBar;
+        this->addToolBar(aboutToolBar);
+        aboutToolBar->addWidget(buttonSettings);
+        aboutToolBar->addWidget(buttonHelp);
+}
+
 void TextEditor::keyPressEvent(QKeyEvent *event)
 {
     if( (event->modifiers() == modifyOpen && event->key() == open) ||
@@ -184,10 +237,12 @@ void TextEditor::keyPressEvent(QKeyEvent *event)
 }
 
 void TextEditor::on_buttonOpen_clicked(){
-    QPlainTextEdit *textEdit = new QPlainTextEdit;
+    QTextEdit *textEdit = new QTextEdit;
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
     QObject::connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
+    QObject::connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
+    QObject::connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(planeMoveCursor()));
 
     //проверка, были ли изменения на старой вкладке, чтобы не ставилась лишняя '*'
     bool isCahngeCurrentTab = false;
@@ -269,13 +324,14 @@ void TextEditor::on_buttonOpenOnlyRead_clicked()
 
 void TextEditor::on_buttonCreateNew_clicked()
 {
-    QPlainTextEdit *textEdit = new QPlainTextEdit;
+    QTextEdit *textEdit = new QTextEdit;
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
     textEdit->setToolTip("");
     int newTab = tabArea->addTab(textEdit, "*unknown");
     tabArea->setCurrentIndex(newTab);
     QObject::connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
+    QObject::connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
 }
 
 void TextEditor::retranslateUI()
@@ -287,6 +343,12 @@ void TextEditor::retranslateUI()
     buttonHelp->setToolTip(tr("Help"));
     buttonSettings->setToolTip(tr("Settings"));
     buttonPrint->setToolTip(tr("Print"));
+
+    actionTextSelect->setToolTip(tr("Change format of selected text"));
+    actionTextFormat->setToolTip(tr("Copy format"));
+    actionTextLeft->setToolTip(tr("Align text left"));
+    actionTextCentre->setToolTip(tr("Align text centre"));
+    actionTextRight->setToolTip(tr("Align text right"));
 
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
@@ -322,6 +384,11 @@ void TextEditor::redrawUI(QString _qss, QPalette _palette)
     buttonPrint->setStyleSheet(_qss);
     buttonHelp->setStyleSheet(_qss);
     buttonSettings->setStyleSheet(_qss);
+    actionTextSelect->setStyleSheet(_qss);
+    actionTextFormat->setStyleSheet(_qss);
+    actionTextLeft->setStyleSheet(_qss);
+    actionTextCentre->setStyleSheet(_qss);
+    actionTextRight->setStyleSheet(_qss);
 
     centralWgt->setStyleSheet(_qss);
 
@@ -351,7 +418,7 @@ void TextEditor::swtHotKeyExit(unsigned int _modify, int _key)
 void TextEditor::findText()
 {
     QWidget *widg = tabArea->currentWidget();
-    QPlainTextEdit *textEditor = static_cast<QPlainTextEdit*>(widg);
+    QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
     find->setTextEdit(textEditor); //передадим весь текст в поиск
     QObject::connect(find, SIGNAL(setCursorPos(int, int, int)), this, SLOT(setNewPosition(int, int, int)));   // Соединяем сигнал  от диалогового окна к слоту
     find->show();              // Запускаем диалог без блокировки главного окна
@@ -360,7 +427,7 @@ void TextEditor::findText()
 void TextEditor::setNewPosition(int start, int lenght, int npos)
 {                                                          // Если поиск прошел удачно, получаем координаты выделения текста
   QWidget *widg = tabArea->currentWidget();
-  QPlainTextEdit *textEditor = static_cast<QPlainTextEdit*>(widg);
+  QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
   QTextCursor tcursor = textEditor->textCursor();            // Копируем объект QTextCursor
   if (npos > start) {                                      // Если нужно сместить курсор вперед
       tcursor.setPosition(start, QTextCursor::MoveAnchor); // Устанавливаем курсор в начало искомой строки по индексу
@@ -381,7 +448,7 @@ void TextEditor::on_actionFilePrint_clicked()
    if (dlg.exec() != QDialog::Accepted)
        return;
    QWidget *widg = tabArea->currentWidget();
-   QPlainTextEdit *textEditor = static_cast<QPlainTextEdit*>(widg);
+   QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
    textEditor->print(&printer);
 }
 
@@ -389,7 +456,7 @@ void TextEditor::changeTabArea()
 {
     QWidget *widg = tabArea->currentWidget();
     if(widg) {
-        QPlainTextEdit *textEditor = static_cast<QPlainTextEdit*>(widg);
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
         find->setTextEdit(textEditor);
     }
 //    QMessageBox::information(this, "rfrf", "rfrf");
@@ -412,4 +479,82 @@ void TextEditor::planeTxtChange()
 {
     if(tabArea->tabText(tabArea->currentIndex())[0] != '*')
         tabArea->setTabText(tabArea->currentIndex(), tabArea->tabText(tabArea->currentIndex()).insert(0, '*'));
+}
+
+void TextEditor::planeSelectionChange(bool select)
+{
+    if(select && !processSelected && isCopyTextFormat) {
+        processSelected = true;
+    }
+    else if (isCopyTextFormat && processSelected && !select){
+        isCopyTextFormat = false;
+        processSelected = false;
+    }
+}
+
+void TextEditor::planeMoveCursor()
+{
+    if(isCopyTextFormat && processSelected) { //если мы копируем формат
+        QWidget *widg = tabArea->currentWidget();
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+        QTextCursor cursor = textEditor->textCursor();
+        cursor.mergeCharFormat(m_fmt);
+        textEditor->mergeCurrentCharFormat(m_fmt);
+    }
+}
+
+void TextEditor::on_actionTextSelect_clicked()
+{
+    QWidget *widg = tabArea->currentWidget();
+    if(widg) {
+       QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+       QFontDialog fntDlg(m_font,this);
+       bool ok;
+       m_font = fntDlg.getFont(&ok); // Запускаем диалог настройки шрифта
+       if (ok){                 // Если нажата кнопка OK, применяем новые настройки шрифта
+           QTextCharFormat fmt;
+           fmt.setFont(m_font);
+           textEditor->textCursor().setCharFormat(fmt);
+       }
+    }
+}
+
+void TextEditor::on_actionTextFormat_clicked()
+{
+    QWidget *widg = tabArea->currentWidget();
+    if(widg) {
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+        m_font = textEditor->textCursor().charFormat().font(); // получаем текущий шрифт
+        m_fmt.setFont(m_font); //устанавливаем шрифт в формат
+
+        isCopyTextFormat = true;
+        actionTextFormat->setDown(isCopyTextFormat);
+    }
+}
+
+void TextEditor::on_actionTextLeft_clicked()
+{
+    QWidget *widg = tabArea->currentWidget();
+    if(widg) {
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+        textEditor->setAlignment(Qt::AlignLeft);
+    }
+}
+
+void TextEditor::on_actionTextCentre_clicked()
+{
+    QWidget *widg = tabArea->currentWidget();
+    if(widg) {
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+        textEditor->setAlignment(Qt::AlignCenter);
+    }
+}
+
+void TextEditor::on_actionTextRight_clicked()
+{
+    QWidget *widg = tabArea->currentWidget();
+    if(widg) {
+        QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+        textEditor->setAlignment(Qt::AlignRight);
+    }
 }

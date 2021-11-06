@@ -6,6 +6,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
 
     cbDark = new QCheckBox;
     cbLanguage = new QCheckBox;
+
     lbDark = new QLabel;
     lbLanguage = new QLabel;
 
@@ -19,7 +20,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
     leExit = new QLineEdit;
 
     qss =   "QWidget{""background-color: rgb(239, 239, 239);""}"
-                           "QPlainTextEdit{""background-color: rgb(255, 255, 255);""border-color: rgb(0, 179, 255);""border: 5px solid rgb(0, 179, 255);""}"
+                           "QTextEdit{""background-color: rgb(255, 255, 255);""border-color: rgb(0, 179, 255);""border: 5px solid rgb(0, 179, 255);""}"
                            "QPushButton{""border-radius: 00px;""background-color: rgb(239, 239, 239);""qproperty-iconSize: 28px 28px;""}"
                            "QPushButton:pressed{"" border-radius: 10px;""background-color: rgb(0, 179, 255);""}"
                            "QToolButton{""border-radius: 00px;""background-color: rgb(239, 239, 239);""qproperty-iconSize: 28px 28px;""}"
@@ -27,7 +28,7 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
 
 
     qssDark = "QWidget{""background-color: rgb(53, 53, 53);""text-color: rgb(255, 255, 255);""}"
-                              "QPlainTextEdit{""background-color: rgb(25, 25, 25);""border-color: rgb(0, 179, 255);"
+                              "QTextEdit{""background-color: rgb(25, 25, 25);""border-color: rgb(0, 179, 255);"
                                   "             ""border: 5px solid rgb(0, 179, 255);""text-color: rgb(255, 255, 255);""}"
                               "QPushButton{""border-radius: 00px;""background-color: rgb(53, 53, 53);""qproperty-iconSize: 28px 28px;""}"
                               "QPushButton:pressed{"" border-radius: 10px;""background-color: rgb(0, 179, 255);""}"
@@ -85,8 +86,12 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
     mainGrid->addWidget(lbExit, 5, 0);
     mainGrid->addWidget(leExit, 5, 1);
 
-    qApp->setPalette(palette);
+    cbLanguage->setChecked(true); //старт с русского языка
+    cbDark->setChecked(true);  //старт в темной теме
+
+    qApp->setPalette(getPalette());
     this->setStyleSheet(getQss());
+    if(cbLanguage->isChecked()) on_cbLanguage_clicked();
 
     this->setLayout(mainGrid);
 
@@ -270,13 +275,17 @@ void Settings::on_cbDark_clicked()
 
 void Settings::on_cbLanguage_clicked() {
     if (cbLanguage->isChecked()){//русский
-        translator = new QTranslator;
+        translator = new QTranslator(qApp);
         static_cast<void>(translator->load(":/translator/RU_tu.qm"));
+        translatorStandart = new QTranslator(qApp);
+        static_cast<void>(translatorStandart->load(":/translator/qtbase_ru.qm"));
         qApp->installTranslator(translator);
+        qApp->installTranslator(translatorStandart);
         emit retranslate();
     }
     else{//английский
         delete translator;
+        delete translatorStandart;
         emit retranslate();
     }
 }

@@ -12,12 +12,12 @@
 class FineDialog : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QPlainTextEdit *textEdit WRITE setTextEdit)
+    Q_PROPERTY(QTextEdit *textEdit WRITE setTextEdit)
 
     public:
        explicit FineDialog(QWidget *parent = nullptr);
        virtual ~FineDialog() override;
-       void setTextEdit(QPlainTextEdit *textEdit);
+       void setTextEdit(QTextEdit *textEdit);
     signals:
 
     public slots:
@@ -25,7 +25,7 @@ class FineDialog : public QDialog
        void findNext();
        void retranslateUI();
     private:
-       QPlainTextEdit *textEdit;
+       QTextEdit *textEdit;
        QGridLayout *layout;
        QLabel *label;
        QLineEdit *lineEdit;              // Строка для ввода строки поиска

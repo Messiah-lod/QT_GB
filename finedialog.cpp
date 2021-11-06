@@ -27,7 +27,7 @@ FineDialog::~FineDialog()
 
 }
 
-void FineDialog::setTextEdit(QPlainTextEdit *_textEdit)
+void FineDialog::setTextEdit(QTextEdit *_textEdit)
 {
     textEdit = _textEdit;
 }

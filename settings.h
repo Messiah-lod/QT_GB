@@ -32,6 +32,7 @@ private:
         QString qssDark;
 
         QTranslator *translator;
+        QTranslator *translatorStandart;
 
         QLabel *lbOpen;
         QLineEdit *leOpen;
