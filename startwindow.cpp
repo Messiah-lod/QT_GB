@@ -8,14 +8,15 @@ startWindow::startWindow(QWidget *parent)
     buttonOne = new QPushButton;
     buttonTwo = new QPushButton;
     buttonThree = new QPushButton;
+    gEdit = new graphicsEditor;
 
     buttonOne->setText("Задание 1");
     buttonTwo->setText("Задание 2");
     buttonThree->setText("Задание 3");
 
     mainGrid->addWidget(buttonOne, 1, 1, 1, 1);
-    mainGrid->addWidget(buttonTwo, 3,1,1,1);
-    mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
+ //   mainGrid->addWidget(buttonTwo, 3,1,1,1);
+  //  mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
 
     QObject::connect(buttonOne, SIGNAL(clicked()), this, SLOT(buttonOne_clicked()));
     QObject::connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
@@ -26,9 +27,10 @@ startWindow::startWindow(QWidget *parent)
 
 void startWindow::buttonOne_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 1");
-    msgBox.exec();
+//    QMessageBox msgBox;
+//    msgBox.setText("Задание 1");
+//    msgBox.exec();
+        gEdit->show();
 }
 
 void startWindow::buttonTwo_clicked()

@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QPushButton>
 #include <QMessageBox>
+#include "graphicseditor.h"
 
 class startWindow : public QWidget
 {
@@ -24,7 +25,8 @@ public:
     void buttonTwo_clicked();
     void buttonThree_clicked();
 
-
+private:
+    graphicsEditor *gEdit;
 
 };
 
