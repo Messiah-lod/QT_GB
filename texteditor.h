@@ -57,6 +57,7 @@ private:
     QAction *actionFileExit;
     QAction *actionEditFind;
     QAction *actionEditSetings;
+    QAction *actionEditDateTime;
     QAction *actionHelpAbout;
 
     unsigned int modifyOpen , modifySave, modifyClear, modifyExit;
@@ -94,8 +95,11 @@ public slots:
     void on_buttonSettings_clicked();
     void on_buttonOpenOnlyRead_clicked();
     void on_buttonCreateNew_clicked();
+    void on_buttonInsertDateTime_clicked();
+
     void retranslateUI();
     void redrawUI(QString _qss, QPalette _palette);
+
     void swtHotKeyOpen(unsigned int _modify, int _key);
     void swtHotKeySave(unsigned int _modify, int _key);
     void swtHotKeyClear(unsigned int _modify, int _key);

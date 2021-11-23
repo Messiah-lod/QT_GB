@@ -175,6 +175,10 @@ void TextEditor::createMenu()
         actionEditFind->setIcon(QIcon(":/Icons/Icons/find.png"));
         QObject::connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
 
+        actionEditDateTime = new QAction(this);
+//        actionEditDateTime->setIcon(QIcon(":/Icons/Icons/find.png"));
+        QObject::connect(actionEditDateTime, SIGNAL(triggered(bool)), this, SLOT(on_buttonInsertDateTime_clicked()));
+
         actionHelpAbout = new QAction(this);
         actionHelpAbout->setIcon(QIcon(":/Icons/Icons/help.png"));
         QObject::connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
@@ -191,6 +195,7 @@ void TextEditor::createMenu()
         fileMenu->addAction(actionFileExit);
         editMenu->addAction(actionEditSetings);
         editMenu->addAction(actionEditFind);
+        editMenu->addAction(actionEditDateTime);
         helpMenu->addAction(actionHelpAbout);
 
         this->setMenuBar(menubar);
@@ -334,6 +339,18 @@ void TextEditor::on_buttonCreateNew_clicked()
     QObject::connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
 }
 
+void TextEditor::on_buttonInsertDateTime_clicked()
+{
+    QDateTime dateTime = QDateTime::currentDateTime();
+    QString time = dateTime.time().toString("hh:mm");
+    QString date = dateTime.date().toString("dd.MM.yyyy");
+
+    QWidget *widg = tabArea->currentWidget();
+    QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
+
+    textEditor->insertPlainText(time + " " + date);
+}
+
 void TextEditor::retranslateUI()
 {
     this->setWindowTitle(tr("Text editor"));
@@ -361,6 +378,7 @@ void TextEditor::retranslateUI()
     actionFileExit->setText(tr("Exit"));
     actionEditSetings->setText(tr("Setings"));
     actionEditFind->setText(tr("Find..."));
+    actionEditDateTime->setText(tr("Date && Time"));
     actionHelpAbout->setText(tr("About"));
 
     messExit->setWindowTitle(tr("Exit"));
