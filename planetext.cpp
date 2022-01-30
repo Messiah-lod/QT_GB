@@ -2,16 +2,16 @@
 
 planeText::planeText(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
-    buttonTextToSecond = new QPushButton;
+    buttonTextToSecond = new QPushButton(this);
     buttonTextToSecond->setText("Добавить из 1 во 2");
-    buttonReplaceTextOne = new QPushButton;
+    buttonReplaceTextOne = new QPushButton(this);
     buttonReplaceTextOne->setText("Заменить в 1 на 2");
-    buttonAppendHtmlTextSecond = new QPushButton;
+    buttonAppendHtmlTextSecond = new QPushButton(this);
     buttonAppendHtmlTextSecond->setText("Добавить во 2 HTML");
 
-    description = new QLabel;
+    description = new QLabel(this);
     description->setWordWrap(true);
     description->setText("Первая кнопка будет добавлять текст из"
                          " одного текстового виджета в другой, вторая"
@@ -19,13 +19,13 @@ planeText::planeText(QWidget *parent) : QWidget(parent)
                          "текст в другом виджете. Добавить третью кнопку,"
                          " которая вставляет в один из текстовый виджет "
                          "текст произвольного html-кода");
-    oneText = new QLabel;
+    oneText = new QLabel(this);
     oneText->setText("Поле ввода №1");
-    twoText = new QLabel;
+    twoText = new QLabel(this);
     twoText->setText("Поле ввода №2");
 
-    planeOne = new QPlainTextEdit;
-    planeTwo = new QPlainTextEdit;
+    planeOne = new QPlainTextEdit(this);
+    planeTwo = new QPlainTextEdit(this);
 
     mainGrid->addWidget(description, 0, 0, 1, 6);
     mainGrid->addWidget(oneText, 2, 0, 1, 3);
@@ -36,9 +36,9 @@ planeText::planeText(QWidget *parent) : QWidget(parent)
     mainGrid->addWidget(buttonReplaceTextOne, 4, 2, 1, 2);
     mainGrid->addWidget(buttonAppendHtmlTextSecond, 4, 4, 1, 2);
 
-    QObject::connect(buttonTextToSecond, SIGNAL(clicked()), this, SLOT(on_buttonTextToSecond_clicked()));
-    QObject::connect(buttonReplaceTextOne, SIGNAL(clicked()), this, SLOT(on_buttonReplaceTextOne_clicked()));
-    QObject::connect(buttonAppendHtmlTextSecond, SIGNAL(clicked()), this, SLOT(on_buttonAppendHtmlTextSecond_clicked()));
+    connect(buttonTextToSecond, SIGNAL(clicked()), this, SLOT(on_buttonTextToSecond_clicked()));
+    connect(buttonReplaceTextOne, SIGNAL(clicked()), this, SLOT(on_buttonReplaceTextOne_clicked()));
+    connect(buttonAppendHtmlTextSecond, SIGNAL(clicked()), this, SLOT(on_buttonAppendHtmlTextSecond_clicked()));
 
     this->setLayout(mainGrid);
     this->setWindowTitle("QPlainTextEdit");

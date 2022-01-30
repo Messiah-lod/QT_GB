@@ -2,29 +2,29 @@
 
 calculatorTriangle::calculatorTriangle(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
-    buttonCalculate = new QPushButton;
+    buttonCalculate = new QPushButton(this);
     buttonCalculate->setText("Вычислить");
 
-    sideAEdit = new QLineEdit;
-    sideBEdit = new QLineEdit;
-    angEdit = new QLineEdit;
+    sideAEdit = new QLineEdit(this);
+    sideBEdit = new QLineEdit(this);
+    angEdit = new QLineEdit(this);
 
-    grad = new QRadioButton;
+    grad = new QRadioButton(this);
     grad->setText("Угол в градусах");
     grad->setChecked(true);
-    rad = new QRadioButton;
+    rad = new QRadioButton(this);
     rad->setText("Угол в радианах");
 
-    description = new QLabel;
+    description = new QLabel(this);
     description->setText("Укажите стороны треугольника A, B и угол между ними для расчета третьей стороны треугольника.");
-    answer = new QLabel;
-    textSideA = new QLabel;
+    answer = new QLabel(this);
+    textSideA = new QLabel(this);
     textSideA->setText("Сторона А ");
-    textSideB = new QLabel;
+    textSideB = new QLabel(this);
     textSideB->setText("Сторона В ");
-    textAng = new QLabel;
+    textAng = new QLabel(this);
     textAng->setText("Угол ");
 
     mainGrid->addWidget(description, 0, 0, 1, 6);
@@ -39,7 +39,7 @@ calculatorTriangle::calculatorTriangle(QWidget *parent) : QWidget(parent)
     mainGrid->addWidget(buttonCalculate, 5, 3, 1, 2);
     mainGrid->addWidget(answer, 6, 3, 1, 3);
 
-    QObject::connect(buttonCalculate, SIGNAL(clicked()), this, SLOT(on_buttonCalculate_clicked()));
+    connect(buttonCalculate, SIGNAL(clicked()), this, SLOT(on_buttonCalculate_clicked()));
 
     this->setLayout(mainGrid);
     this->setWindowTitle("Рассчет стороны реугольника");

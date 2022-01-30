@@ -2,25 +2,25 @@
 
 calculatorQuadratic::calculatorQuadratic(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
-    buttonCalculate = new QPushButton;
+    buttonCalculate = new QPushButton(this);
     buttonCalculate->setText("Вычислить");
-    buttonClear = new QPushButton;
+    buttonClear = new QPushButton(this);
     buttonClear->setText("Очистить");
 
-    numberA = new QLineEdit;
-    numberB = new QLineEdit;
-    numberC = new QLineEdit;
+    numberA = new QLineEdit(this);
+    numberB = new QLineEdit(this);
+    numberC = new QLineEdit(this);
 
-    description = new QLabel;
+    description = new QLabel(this);
     description->setText("Укажите коэффициенты A, B и C квадратного уравнения Ax^2 + Bx + C = 0");
-    answer = new QLabel;
-    textX2 = new QLabel;
+    answer = new QLabel(this);
+    textX2 = new QLabel(this);
     textX2->setText("x^2 + ");
-    textX = new QLabel;
+    textX = new QLabel(this);
     textX->setText(" x + ");
-    textEqually = new QLabel;
+    textEqually = new QLabel(this);
     textEqually->setText(" = 0");
 
     mainGrid->addWidget(description, 0, 0, 1, 6);
@@ -34,8 +34,8 @@ calculatorQuadratic::calculatorQuadratic(QWidget *parent) : QWidget(parent)
     mainGrid->addWidget(buttonCalculate, 4, 3, 1, 2);
     mainGrid->addWidget(answer, 5, 3, 2, 3);
 
-    QObject::connect(buttonCalculate, SIGNAL(clicked()), this, SLOT(on_buttonCalculate_clicked()));
-    QObject::connect(buttonClear, SIGNAL(clicked()), this, SLOT(on_buttonClear_clicked()));
+    connect(buttonCalculate, SIGNAL(clicked()), this, SLOT(on_buttonCalculate_clicked()));
+    connect(buttonClear, SIGNAL(clicked()), this, SLOT(on_buttonClear_clicked()));
 
     this->setLayout(mainGrid);
 
@@ -52,7 +52,7 @@ void calculatorQuadratic::on_buttonCalculate_clicked(){
         QMessageBox msgBox;
         msgBox.setText("Данные для расчета не введены!");
         msgBox.exec();
-    };
+    }
     //выполним преобразование и приведение строк к числам
     numAtxt.replace(",",".");
     numBtxt.replace(",",".");
@@ -67,10 +67,10 @@ void calculatorQuadratic::on_buttonCalculate_clicked(){
 
     //Проведем рачет корней уравнения
     numD = qPow(numB, 2) - 4 * numA * numC;
-    if(numA != 0.0 && numD >= 0){
+    if(!qFuzzyCompare(numA,0.0) && numD >= 0){
         resultX1 = ((-1 * numB) + qSqrt(numD))/(2*numA);
         resultX2 = ((-1 * numB) - qSqrt(numD))/(2*numA);
-    } else if(numA == 0.0) {
+    } else if(qFuzzyCompare(numA, 0.0)) {
         resultX1 = resultX2 = (-1 * numC)/numB;
         numD = 0;
     }
