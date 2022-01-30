@@ -1,15 +1,26 @@
-#include "startwindow.h"
-#include <QApplication>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QDebug>
+
+#include "taskmanager.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    startWindow w;
-    w.setMinimumHeight(100);
-    w.setMinimumWidth(200);
-    w.setMaximumHeight(200);
-    w.setMaximumWidth(400);
-    w.show();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+    QGuiApplication app(argc, argv);
 
-    return a.exec();
+    qmlRegisterType<TaskManager>("TaskManager", 1,0, "TaskManager");
+
+    QQmlApplicationEngine engine;
+    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                     &app, [url](QObject *obj, const QUrl &objUrl) {
+        if (!obj && url == objUrl)
+            QCoreApplication::exit(-1);
+    }, Qt::QueuedConnection);
+    engine.load(url);
+
+    return app.exec();
 }

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>AcceptButton.qml</file>
+        <file>DeleteButton.qml</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file>background.jpg</file>
+        <file>acceptPres.png</file>
+        <file>acceptRelease.png</file>
+        <file>deletePres.png</file>
+        <file>deleteRelease.png</file>
+    </qresource>
+</RCC>
