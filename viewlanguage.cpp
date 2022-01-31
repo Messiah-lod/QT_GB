@@ -2,29 +2,28 @@
 
 ViewLanguage::ViewLanguage(QWidget *parent) : QWidget(parent)
 {
-    list << "С++" << "Python" << "Java"<< "C#"<< "PHP"<< "JavaScript";
-    modelList = new QStandardItemModel(list.size(), 1, this);
+    list << "C++" << "Python" << "Java"<< "C#"<< "PHP"<< "JavaScript";
+    modelList = new QStandardItemModel(int(list.size()), 1, this);
     for (int i = 0; i < modelList->rowCount(); ++i) {
         QModelIndex index = modelList->index(i, 0);
         QString str = list[i];
         modelList->setData(index, str,Qt::DisplayRole);
-        modelList->setData(index, QIcon("./Icons/" + str + ".png"),Qt::DecorationRole);
+        modelList->setData(index, QIcon(":/icon/Icons/" + str + ".png"),Qt::DecorationRole);
     }
 
-    mainGrid = new QGridLayout;
-    desc = new QLabel;
-    modelListView = new QListView;
+    mainGrid = new QGridLayout(this);
+    desc = new QLabel(this);
+    modelListView = new QListView(this);
     modelListView->setModel(modelList);
-    btnAdd = new QPushButton;
+    btnAdd = new QPushButton(this);
     btnAdd->setText("Добавить");
-    btnRm = new QPushButton;
+    btnRm = new QPushButton(this);
     btnRm->setText("Удалить");
-    cbView = new QCheckBox;
+    cbView = new QCheckBox(this);
     cbView->setText("Режим иконок");
 
     desc->setWordWrap(true);
-    desc->setText("Названия языков программирования \n"
-                 );
+    desc->setText("Названия языков программирования \n");
 
     mainGrid->addWidget(desc, 0 ,0, 1, 6);
     mainGrid->addWidget(modelListView, 1, 0 , 1, 6);
@@ -35,10 +34,10 @@ ViewLanguage::ViewLanguage(QWidget *parent) : QWidget(parent)
     this->setLayout(mainGrid);
     this->setWindowTitle("Список языков программирования");
 
-    QObject::connect(btnAdd, SIGNAL(clicked()), this, SLOT(on_btnAdd_clicked()));
-    QObject::connect(btnRm, SIGNAL(clicked()), this, SLOT(on_btnRm_clicked()));
-    QObject::connect(cbView, SIGNAL(clicked()), this, SLOT(on_cbView_clicked()));
-    QObject::connect(modelListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_currentIndView_clicked(QModelIndex)));
+    connect(btnAdd, SIGNAL(clicked()), this, SLOT(on_btnAdd_clicked()));
+    connect(btnRm, SIGNAL(clicked()), this, SLOT(on_btnRm_clicked()));
+    connect(cbView, SIGNAL(clicked()), this, SLOT(on_cbView_clicked()));
+    connect(modelListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_currentIndView_clicked(QModelIndex)));
 
 
     modelListView->setDragDropMode(QAbstractItemView::InternalMove);
@@ -49,7 +48,7 @@ ViewLanguage::ViewLanguage(QWidget *parent) : QWidget(parent)
 void ViewLanguage::on_btnAdd_clicked(){
     QStandardItem *item = new QStandardItem;
     item->setText("Новый язык");
-    item->setIcon(QIcon("./Icons/others.ico"));
+    item->setIcon(QIcon(":/icon/Icons/others.ico"));
     modelList->appendRow(item);
 }
 
@@ -65,5 +64,6 @@ void ViewLanguage::on_cbView_clicked(){
 }
 
 void ViewLanguage::on_currentIndView_clicked(QModelIndex idx){
+    Q_UNUSED(idx)
  //   curInd = idx;
 }

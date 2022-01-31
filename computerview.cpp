@@ -3,11 +3,11 @@
 ComputerView::ComputerView(QWidget *parent) : QWidget(parent)
 {
 
-    mainGrid = new QGridLayout;
-    desc = new QLabel;
+    mainGrid = new QGridLayout(this);
+    desc = new QLabel(this);
     desc->setText("По нажатию на кнопку \"Выделить\" меняется задний фон ячейки таблицы");
 
-    computerModel = new QStandardItemModel;
+    computerModel = new QStandardItemModel(this);
     computerModel->setColumnCount(4);
     computerModel->setHorizontalHeaderLabels(QStringList() << "№" << "Имя компьютера" << "IP адрес" << "MAC адрес");
 
@@ -21,15 +21,15 @@ ComputerView::ComputerView(QWidget *parent) : QWidget(parent)
     }
 
     computerSelectionModel = new QItemSelectionModel(computerModel);
-    computerView = new QTableView;
+    computerView = new QTableView(this);
     computerView->setModel(computerModel);
     computerView->setSelectionModel(computerSelectionModel);
     computerView->resizeColumnsToContents();
     computerView->verticalHeader()->hide();
 
-    btnSelected = new QPushButton;
+    btnSelected = new QPushButton(this);
     btnSelected->setText("Выделить");
-    btnAdd = new QPushButton;
+    btnAdd = new QPushButton(this);
     btnAdd->setText("Добавить");
 
     mainGrid->addWidget(desc, 0, 0, 1,4);
@@ -37,8 +37,8 @@ ComputerView::ComputerView(QWidget *parent) : QWidget(parent)
     mainGrid->addWidget(btnSelected, 2, 0, 1,2);
     mainGrid->addWidget(btnAdd, 2, 2, 1,2);
 
-    QObject::connect(btnSelected, SIGNAL(clicked()), this, SLOT(on_btnSelected_clicked()));
-    QObject::connect(btnAdd, SIGNAL(clicked()), this, SLOT(on_btnAdd_clicked()));
+    connect(btnSelected, SIGNAL(clicked()), this, SLOT(on_btnSelected_clicked()));
+    connect(btnAdd, SIGNAL(clicked()), this, SLOT(on_btnAdd_clicked()));
 
     this->setLayout(mainGrid);
 }

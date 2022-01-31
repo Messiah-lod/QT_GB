@@ -10,7 +10,7 @@ bool ParserValute::removeQStr(QString m_str){
     str = m_str;
     isChange = false;
     for (int i = 0; i < SIZE_COLLECTION; i++) {
-        pos = str.indexOf(massString[i], 0);
+        pos = int(str.indexOf(massString[i], 0));
         if(pos != -1){
             str.replace(pos,massString[i].size(),massSymbol[i]);
             isChange = true;

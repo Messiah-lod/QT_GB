@@ -2,10 +2,10 @@
 
 insertValute::insertValute(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
-    planeOne = new QPlainTextEdit;
+    mainGrid = new QGridLayout(this);
+    planeOne = new QPlainTextEdit(this);
     parserValute = new ParserValute;
-    desc = new QLabel;
+    desc = new QLabel(this);
     desc->setWordWrap(true);
     desc->setText("Заменяет текст, введенный: \n"
                   " #@CR = © — знак охраны авторского права,\n"
@@ -20,7 +20,7 @@ insertValute::insertValute(QWidget *parent) : QWidget(parent)
     this->setLayout(mainGrid);
     this->setWindowTitle("Преобразование валют");
 
-    QObject::connect(planeOne, SIGNAL(textChanged()), this, SLOT(on_plainTextEdit_textChanged()));
+    connect(planeOne, SIGNAL(textChanged()), this, SLOT(on_plainTextEdit_textChanged()));
 }
 
 void insertValute::on_plainTextEdit_textChanged(){
@@ -28,7 +28,7 @@ void insertValute::on_plainTextEdit_textChanged(){
         planeOne->setPlainText(parserValute->getQStr());
         //поставим курсор в конец после замены
         QTextCursor cursor = planeOne->textCursor();
-        cursor.setPosition(parserValute->getQStr().size());
+        cursor.setPosition(int(parserValute->getQStr().size()));
         planeOne->setTextCursor(cursor);
     }
 }
