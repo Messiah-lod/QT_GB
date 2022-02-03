@@ -2,33 +2,27 @@
 
 TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
     this->setStyleSheet(qss);
 
- //   QSize sizeBtn(30,30);
- //   QSize sizeIcon(30,30);
-    buttonOpen = new QPushButton;
+    buttonOpen = new QPushButton(this);
     buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
- //   buttonOpen->setMinimumSize(sizeBtn);
- //   buttonOpen->setIconSize(sizeIcon);
     buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonOpen->setToolTip("Открыть");
 
-    buttonSave = new QPushButton;
+    buttonSave = new QPushButton(this);
     buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
- //   buttonSave->setIconSize(sizeIcon);
     buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonSave->setToolTip("Сохранить");
 
-    buttonHelp = new QPushButton;
+    buttonHelp = new QPushButton(this);
     buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
-  //  buttonHelp->setIconSize(sizeIcon);
     buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonHelp->setToolTip("Справка");
 
-    editor = new QPlainTextEdit;
-    cbDark = new QCheckBox("Темная тема");
+    editor = new QPlainTextEdit(this);
+    cbDark = new QCheckBox("Темная тема", this);
 
     mainGrid->addWidget(buttonOpen, 0, 0);
     mainGrid->addWidget(buttonSave, 0, 1);
@@ -39,10 +33,10 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
     this->setLayout(mainGrid);
     this->setWindowTitle("Текстовый редактор");
 
-    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
-    QObject::connect(cbDark, SIGNAL(clicked()), this, SLOT(on_cbDark_clicked()));
+    connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
+    connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
+    connect(cbDark, SIGNAL(clicked()), this, SLOT(on_cbDark_clicked()));
 
 }
 
