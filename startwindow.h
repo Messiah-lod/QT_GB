@@ -17,8 +17,8 @@ public:
 private:
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
     QPushButton *buttonOne;
-    QPushButton *buttonTwo;
-    QPushButton *buttonThree;
+//    QPushButton *buttonTwo;
+//    QPushButton *buttonThree;
 
     ParseHtml *parsehtml;
 

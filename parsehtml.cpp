@@ -2,19 +2,19 @@
 
 ParseHtml::ParseHtml(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
-    planeOne = new QPlainTextEdit;
-    desc = new QLabel;
+    mainGrid = new QGridLayout(this);
+    planeOne = new QPlainTextEdit(this);
+    desc = new QLabel(this);
     desc->setWordWrap(true);
     desc->setText("Выполняет поиск погоды и курса валют в представленно html файле, ориентрован на mail.ru");
 
-    weather = new QLabel;
+    weather = new QLabel(this);
     weather->setText("Погода");
-    dollar = new QLabel;
+    dollar = new QLabel(this);
     dollar->setText("Доллар");
-    euro = new QLabel;
+    euro = new QLabel(this);
     euro->setText("Евро");
-    openHtml = new QPushButton;
+    openHtml = new QPushButton(this);
     openHtml->setText("Открыть HTML");
 
     mainGrid->addWidget(desc, 0 ,0 , 1 , 2);
@@ -27,7 +27,7 @@ ParseHtml::ParseHtml(QWidget *parent) : QWidget(parent)
     this->setLayout(mainGrid);
     this->setWindowTitle("Парсер HTML");
 
-    QObject::connect(openHtml, SIGNAL(clicked()), this, SLOT(on_openHtml_clicked()));
+    connect(openHtml, SIGNAL(clicked()), this, SLOT(on_openHtml_clicked()));
 }
 
 void ParseHtml::on_openHtml_clicked() {
