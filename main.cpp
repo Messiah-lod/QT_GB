@@ -1,8 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QDebug>
+#include <QWidget>
 
 #include "taskmanager.h"
+#include "taskmanagermodel.h"
+
+#include "testclass.h"
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +17,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<TaskManager>("TaskManager", 1,0, "TaskManager");
+    qmlRegisterType<TaskManager>("TaskManagerModel", 1,0, "TaskManagerModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -21,6 +27,14 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    QApplication a(argc, argv);
+    TestClass w;
+//        w.setMinimumHeight(100);
+//        w.setMinimumWidth(200);
+//        w.setMaximumHeight(200);
+//        w.setMaximumWidth(400);
+        w.show();
 
     return app.exec();
 }

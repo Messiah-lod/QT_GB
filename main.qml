@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import Qt.labs.qmlmodels 1.0
 import TaskManager 1.0
-
+import TaskManagerModel 1.0
 
 
 ApplicationWindow  {
@@ -53,36 +53,40 @@ ApplicationWindow  {
             Layout.row: 0
             Layout.column: 0
 
-            TableModel{
-                id: _myTable
-                TableModelColumn { display: "Name" }
-                TableModelColumn { display: "DeadLine" }
-                TableModelColumn { display: "Progress" }
-                rows:[
-                    {
-                        Name: "<b>Наименование задачи<b>",
-                        DeadLine: "<b>Дата завершения<b>",
-                        Progress: "<b>Прогресс выполнения<b>"
-                    }
-                ]
-            }
+            TaskManagerModel{ id: _taskManagerModel }
 
             TableView {
-                id: _myTableView
+                id: _taskManagerModelView
                 anchors.fill: parent
-                model: _myTable
+                clip: true
+                model:  _taskManagerModel
+                delegate: Text { text: index }
 
-                delegate:  Rectangle {
-                    implicitWidth: 215
-                    implicitHeight: 30
-                    color: "gray"
-                    border.color: "black"
-                    Text {
-                        text: display
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                    }
-                }
+//                delegate: RowLayout{
+//                               width: _taskManagerModelView.width
+////                               CheckBox{
+////                                   checked: model.done
+////                                   onCheckedChanged: model.done = checked
+////                               }
+//                               TextField{
+//                                   text: display
+//                                   verticalAlignment: Text.AlignVCenter
+//                                   horizontalAlignment: Text.AlignHCenter
+//                                   Layout.fillWidth: true
+////                                   onEditingFinished: model.description = text
+//                               }
+
+//                delegate:  Rectangle {
+//                    implicitWidth: 215
+//                    implicitHeight: 30
+//                    color: "gray"
+//                    border.color: "black"
+//                    Text {
+//                        text: display
+//                        verticalAlignment: Text.AlignVCenter
+//                        horizontalAlignment: Text.AlignHCenter
+//                    }
+//                }
             }
         }
 
@@ -172,11 +176,7 @@ ApplicationWindow  {
                 width: 40
                 height: 40
                 onClicked: {
-                    _myTable.appendRow({
-                                           Name: _txtTaskName.text,
-                                           DeadLine: _txtDeadLine.text,
-                                           Progress: _sbProgress.displayText
-                                       })
+                    _taskManagerModel.add(_txtTaskName.text, _txtDeadLine.text, _sbProgress.displayText)
                     //  1 способ через Q_INVOKABLE
                     //     _TaskManager.writeFile(_txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText)
                     //  2 способ через Q_PROPERTY - добавление свойства
