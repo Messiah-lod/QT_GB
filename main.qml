@@ -65,12 +65,32 @@ ApplicationWindow  {
                         Progress: "<b>Прогресс выполнения<b>"
                     }
                 ]
+
+//                TableViewColumn {
+//                            width: 215
+//                            title: "Наименование задачи"
+//                            role: "Name"
+//                        }
+
+//                TableViewColumn {
+//                            width: 215
+//                            title: "Дата завершения"
+//                            role: "DeadLine"
+//                        }
+
+//                TableViewColumn {
+//                            width: 215
+//                            title: "Прогресс выполнения"
+//                            role: "Progress"
+//                        }
             }
 
             TableView {
                 id: _myTableView
                 anchors.fill: parent
                 model: _myTable
+
+
 
                 delegate:  Rectangle {
                     implicitWidth: 215
