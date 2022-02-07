@@ -2,21 +2,21 @@
 
 Settings::Settings(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
-    cbDark = new QCheckBox;
-    cbLanguage = new QCheckBox;
-    lbDark = new QLabel;
-    lbLanguage = new QLabel;
+    cbDark = new QCheckBox(this);
+    cbLanguage = new QCheckBox(this);
+    lbDark = new QLabel(this);
+    lbLanguage = new QLabel(this);
 
-    lbOpen = new QLabel;
-    leOpen = new QLineEdit;
-    lbSave = new QLabel;
-    leSave = new QLineEdit;
-    lbClear = new QLabel;
-    leClear = new QLineEdit;
-    lbExit = new QLabel;
-    leExit = new QLineEdit;
+    lbOpen = new QLabel(this);
+    leOpen = new QLineEdit(this);
+    lbSave = new QLabel(this);
+    leSave = new QLineEdit(this);
+    lbClear = new QLabel(this);
+    leClear = new QLineEdit(this);
+    lbExit = new QLabel(this);
+    leExit = new QLineEdit(this);
 
     qss =   "QWidget{""background-color: rgb(239, 239, 239);""}"
                            "QPlainTextEdit{""background-color: rgb(255, 255, 255);""border-color: rgb(0, 179, 255);""border: 5px solid rgb(0, 179, 255);""}"
@@ -65,12 +65,12 @@ Settings::Settings(QWidget *parent) : QWidget(parent)
     leExit->setText("Ctrl+Q");
     leExit->setReadOnly(true);
 
-    QObject::connect(cbDark, SIGNAL(clicked()), this, SLOT(on_cbDark_clicked()));
-    QObject::connect(cbLanguage, SIGNAL(clicked()), this, SLOT(on_cbLanguage_clicked()));
-    QObject::connect(leOpen,SIGNAL(selectionChanged()),this,SLOT(leOpen_onTextEdit()));
-    QObject::connect(leSave,SIGNAL(selectionChanged()),this,SLOT(leSave_onTextEdit()));
-    QObject::connect(leClear,SIGNAL(selectionChanged()),this,SLOT(leClear_onTextEdit()));
-    QObject::connect(leExit,SIGNAL(selectionChanged()),this,SLOT(leExit_onTextEdit()));
+    connect(cbDark, SIGNAL(clicked()), this, SLOT(on_cbDark_clicked()));
+    connect(cbLanguage, SIGNAL(clicked()), this, SLOT(on_cbLanguage_clicked()));
+    connect(leOpen,SIGNAL(selectionChanged()),this,SLOT(leOpen_onTextEdit()));
+    connect(leSave,SIGNAL(selectionChanged()),this,SLOT(leSave_onTextEdit()));
+    connect(leClear,SIGNAL(selectionChanged()),this,SLOT(leClear_onTextEdit()));
+    connect(leExit,SIGNAL(selectionChanged()),this,SLOT(leExit_onTextEdit()));
 
     mainGrid->addWidget(cbDark, 0, 1);
     mainGrid->addWidget(cbLanguage, 1, 1);
@@ -264,7 +264,7 @@ void Settings::on_cbDark_clicked()
 
 void Settings::on_cbLanguage_clicked() {
     if (cbLanguage->isChecked()){//русский
-        translator = new QTranslator;
+        translator = new QTranslator(this);
         static_cast<void>(translator->load(":/translator/RU_tu.qm"));
         qApp->installTranslator(translator);
         emit retranslate();

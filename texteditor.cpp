@@ -2,11 +2,11 @@
 
 TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
-    openAct = new QAction;
-    openReadAct = new QAction;
+    mainGrid = new QGridLayout(this);
+    openAct = new QAction(this);
+    openReadAct = new QAction(this);
 
-    buttonOpen = new QToolButton;
+    buttonOpen = new QToolButton(this);
     buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
     buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonOpen->setPopupMode(QToolButton::MenuButtonPopup);
@@ -14,19 +14,19 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
     buttonOpen->addAction(openReadAct);
     buttonOpen->setFixedSize(46, 30);
 
-    buttonSave = new QPushButton;
+    buttonSave = new QPushButton(this);
     buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
     buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    buttonHelp = new QPushButton;
+    buttonHelp = new QPushButton(this);
     buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
     buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    buttonSettings = new QPushButton;
+    buttonSettings = new QPushButton(this);
     buttonSettings->setIcon(QIcon(":/Icons/Icons/setings.png"));
     buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    editor = new QPlainTextEdit;
+    editor = new QPlainTextEdit(this);
  //   keyCombination = new QKeyCombination;
 
     mainGrid->addWidget(buttonOpen, 0, 0);
@@ -49,18 +49,18 @@ TextEditor::TextEditor(QWidget *parent) : QWidget(parent)
 
     this->setLayout(mainGrid);
 
-    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
-    QObject::connect(openAct, SIGNAL(triggered()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
-    QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
-    QObject::connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
-    QObject::connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
-    QObject::connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
+    connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
+    connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
+    connect(openAct, SIGNAL(triggered()), this, SLOT(on_buttonOpen_clicked()));
+    connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
+    connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
+    connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
+    connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
+    connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
 
     this->setStyleSheet(setting->getQss());
 
