@@ -11,13 +11,13 @@
 
 int main(int argc, char *argv[])
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<TaskManager>("TaskManager", 1,0, "TaskManager");
-    qmlRegisterType<TaskManager>("TaskManagerModel", 1,0, "TaskManagerModel");
+    qmlRegisterType<TaskManager>("TaskManager", 1,0, "TaskManager"); //работа с файлами
+    qmlRegisterType<TaskManagerModel>("TaskManagerModel", 1, 0, "TaskManagerModel");
+
+    const QIcon mainIcon = QIcon::fromTheme("mainIcon", QIcon(":/img/1086460.png"));
+    app.setWindowIcon(mainIcon);
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -27,14 +27,6 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-
-    QApplication a(argc, argv);
-    TestClass w;
-//        w.setMinimumHeight(100);
-//        w.setMinimumWidth(200);
-//        w.setMaximumHeight(200);
-//        w.setMaximumWidth(400);
-        w.show();
 
     return app.exec();
 }

@@ -2,6 +2,7 @@
 #define TASKMANAGER_H
 
 #include <QObject>
+#include <QDebug>
 #include <QString>
 #include <QFile>
 #include <QMessageBox>

@@ -1,113 +1,138 @@
 #include "taskmanagermodel.h"
 
-TaskManagerModel::TaskManagerModel(QObject *parent):
-    QStandardItemModel(parent)
+TaskManagerModel::TaskManagerModel(QObject *parent) :
+    QAbstractTableModel(parent)
 {
-    const QStringList labels {"Наименование задачи","Срок выполнения","Прогресс"};
-    setHorizontalHeaderLabels(labels);
+    modelData  = new QVector <rowData>;
+}
 
-    // Заполняем модель данными построчно
-    for (int i = 0; i < 4; ++i)
-    {
-        add(Name+QString::number(i), DeadLine, Progress);
+TaskManagerModel::~TaskManagerModel()
+{
+
+}
+
+void TaskManagerModel::addObject(QString _name, QString _deadLine, QString _progress)
+{
+    rowData row {_name,_deadLine,_progress};
+    beginInsertRows(QModelIndex(), int(modelData->size()), int(modelData->size()));
+    modelData->append(row);
+    endInsertRows();
+}
+
+void TaskManagerModel::addObject(QByteArray _parametr)
+{
+    QString temp, parametr;
+    parametr = _parametr;
+    QVector <QString> list;
+    //Получим текстовый файл, раскидаем по строкам
+    for(int i = 0; i< parametr.size(); i++){
+        if(parametr[i] == '\r' || parametr[i] == '\n' || parametr[i] == '\t'){
+            list.push_back(temp);
+            temp.clear();
+        }
+        else temp.push_back(parametr[i]);
+    }
+
+    //бежим по строкам, раскидываем по ячейкам
+    for(int i = 0; i < list.size(); i++){
+        int count = 0;
+        temp.clear();
+        QString _name,_deadLine,_progress;
+        for(int j = 0; j < list[i].size(); j++){
+            if(list[i][j] != ';')
+                temp.push_back(list[i][j]);
+            else {
+                switch (count) {
+                case 0: _name = temp; temp.clear() ;break;
+                case 2: _deadLine = temp; temp.clear(); break;
+                }
+                count ++;
+            }
+        }
+        _progress = temp;
+        temp.clear();
+        addObject(_name,_deadLine,_progress);
     }
 
 }
 
-QVariant TaskManagerModel::data(const QModelIndex &index, int role) const
+void TaskManagerModel::delObject(const QModelIndex &index)
 {
-    switch(role)
+    beginRemoveRows(QModelIndex(), index.row(), index.row());
+    modelData->removeAt(index.row());
+    endRemoveRows();
+}
+
+void TaskManagerModel::delData()
+{
+    for (int k = 0; k < modelData->count(); k++)
+        modelData->removeAt(k);
+    modelData->clear();
+}
+
+QVariant TaskManagerModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if(role == Qt::DisplayRole)
     {
-//        case NameRole:
-//            return m_data[index.row()]->text();
-//        case DeadLineRole:
-//            return m_data[index.row()]->text();
-//        case ProgressRole:
-//            return m_data[index.row()]->text();
-//        case Qt::DisplayRole:
-//            return m_data[0]->text();
+        if(orientation == Qt::Horizontal)
+        {
+            switch (section)
+            {
+            case 0:
+                return tr("Наименование задачи");
+            case 1:
+                return tr("Дата завершения");
+            case 2:
+                return tr("Прогресс выполнения");
+            }
+        }
     }
     return QVariant();
 }
 
-//int TaskManagerModel::rowCount(const QModelIndex &parent) const
-//{
-//    if (parent.isValid()) {
-//        return 0;
-//    }
-
-//    return int(m_data.size());
-//}
-
-//QVariant TaskManagerModel::data(const QModelIndex &index, int role) const
-//{
-//    if (!index.isValid()) {
-//        return QVariant();
-//    }
-
-//    switch (role) {
-//    case ColorRole:
-//        return QVariant(index.row() < 2 ? "orange" : "skyblue");
-//    case TextRole:
-//        return m_data.at(index.row());
-//    default:
-//        return QVariant();
-//    }
-//}
-
-//QHash<int, QByteArray> TaskManagerModel::roleNames() const
-//{
-//    QHash<int, QByteArray> roles = QStandardItemModel::roleNames();
-//    roles[ColorRole] = "color";
-//    roles[TextRole] = "text";
-
-//    return roles;
-//}
-
-void TaskManagerModel::add(QString _name, QString _deadLine, QString _progress)
+int TaskManagerModel::rowCount(const QModelIndex &parent) const
 {
-    m_data.append(new QStandardItem(QString(_name)));  // Первая колонка
-    m_data.append(new QStandardItem(QString(_deadLine)));                  // Вторая колонка
-    m_data.append(new QStandardItem(QString(_progress)));                  // Третья колонка
-    this->appendRow(m_data);
-    m_data.clear();
-
-
-
-//    beginInsertRows(QModelIndex(), int(m_data.size()), int(m_data.size()));
-//    m_data.append("new");
-//    endInsertRows();
-
-//    m_data[0] = QString("Size: %1").arg(m_data.size());
-//    QModelIndex index = createIndex(0, 0, static_cast<void *>(nullptr));
-//    emit dataChanged(index, index);
+    if (parent.isValid())
+        return 0;
+    return int(modelData->size());
 }
 
-//bool TaskManagerModel::setData(const QModelIndex &index, const QVariant &value, int role)
-//{
-//    if (!index.isValid()) {
-//        return false;
-//    }
+int TaskManagerModel::columnCount(const QModelIndex &parent) const
+{
+    if (parent.isValid())
+        return 0;
+    return 3;
+}
 
-//    switch (role) {
-//    case ColorRole:
-//        return false;
-//    case TextRole:
-//        m_data[index.row()] = value.toString();
-//        break;
-//    default:
-//        return false;
-//    }
+QVariant TaskManagerModel::data(const QModelIndex &index, int role) const
+{
+    QVariant value;
+    if (!index.isValid())
+        return QVariant();
+    if((role == Qt::DisplayRole || role == Qt::EditRole) && index.row() >= 0 && index.row() < rowCount()
+            && index.column() >= 0 && index.column() < columnCount())
+    {
+        switch (index.column())
+        {
+        case 0:
+            value = (*modelData)[index.row()].nameTask;
+            break;
+        case 1:
+            value = (*modelData)[index.row()].deadLine;
+            break;
+        case 2:
+            value = (*modelData)[index.row()].progress;
+            break;
+        }
+        return value;
+    }
+    return QVariant();
+}
 
-//    emit dataChanged(index, index, QVector<int>() << role);
-
-//    return true;
-//}
-
-//Qt::ItemFlags TaskManagerModel::flags(const QModelIndex &index) const
-//{
-//    if (!index.isValid())
-//        return Qt::ItemIsEnabled;
-
-//    return QStandardItemModel::flags(index) | Qt::ItemIsEditable;
-//}
+Qt::ItemFlags TaskManagerModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags flags = QAbstractTableModel::flags(index);
+        return index.isValid()
+            ? (flags | Qt::ItemIsEditable)
+            : flags;
+}

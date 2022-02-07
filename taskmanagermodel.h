@@ -2,37 +2,45 @@
 #define TASKMANAGERMODEL_H
 
 #include <QStandardItemModel>
+#include <QAbstractItemModel>
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QVariantList>
+#include <QTextCodec>
 
-class TaskManagerModel : public QStandardItemModel
+class TaskManagerModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    enum Roles {
-        NameRole = Qt::UserRole + 1,
-        DeadLineRole,
-        ProgressRole
-    };
+    explicit TaskManagerModel(QObject *parent = nullptr);
 
-    TaskManagerModel(QObject *parent = nullptr);
+    Q_INVOKABLE QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    ~TaskManagerModel() override;
 
-//    virtual int rowCount(const QModelIndex &parent) const override;
-//    virtual QVariant data(const QModelIndex &index, int role) const override;
-//    virtual QHash<int, QByteArray> roleNames() const override;
+    Q_INVOKABLE void addObject(QString _name, QString _deadLine, QString _progress);
+    Q_INVOKABLE void addObject(QByteArray _parametr);
+    Q_INVOKABLE void delObject(const QModelIndex & index);
+    Q_INVOKABLE void delData();
 
-//    virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
-//    virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
-    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    Q_INVOKABLE void add(QString _name, QString _deadLine, QString _progress);
+signals:
+
+
+public slots:
 
 private:
-//    QStandardItem _rowData;
-    QList<QStandardItem*> m_data;
-    QString Name = "Ха-ха", DeadLine = "Хе-хе", Progress = "Ого";
+    struct rowData{
+      QString nameTask = "";
+      QString deadLine = "";
+      QString progress = "";
+    };
+
+    QVector <rowData> *modelData;
 };
 
 #endif // TASKMANAGERMODEL_H

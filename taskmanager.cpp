@@ -17,7 +17,7 @@ QByteArray TaskManager::readFile()
 
         file.close();
     }
-
+    qDebug() << "Зашли в чтение файла";
     return block;
 }
 

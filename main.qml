@@ -20,9 +20,9 @@ ApplicationWindow  {
 
     Component.onCompleted: startupFunction();
     onClosing: { //по закрытию программы
-        if(_txtTaskName.text) { //проверим, если имя задачи введено - сохраним ее в файл
-            _TaskManager.Write = _txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText
-        }
+//        if(_txtTaskName.text) { //проверим, если имя задачи введено - сохраним ее в файл
+//            _TaskManager.Write = _txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText
+//        }
     }
 
     BorderImage {
@@ -36,7 +36,7 @@ ApplicationWindow  {
 
     function startupFunction() {
         //Выполняем подгрузку всех данных из файла
-        console.log(_TaskManager.readFile())
+        _taskManagerModel.addObject(_TaskManager.readFile())
     }
 
     GridLayout  {
@@ -45,80 +45,108 @@ ApplicationWindow  {
         rows: 4
         rowSpacing: 5
         anchors.fill: parent
+
+        TaskManagerModel {
+            id: _taskManagerModel
+        }
+
         Rectangle {
+            id: _backRect
             height: (_mainWindow.height*3)/4
             width: _mainWindow.width
+            color: "#dfd6b9"
+
             Layout.columnSpan: 3
             Layout.rowSpan: 1
             Layout.row: 0
             Layout.column: 0
-
-            TaskManagerModel{ id: _taskManagerModel }
 
             TableView {
                 id: _taskManagerModelView
                 anchors.fill: parent
                 clip: true
                 model:  _taskManagerModel
-                delegate: Text { text: index }
+                topMargin: _columnsHeader.implicitHeight //отступ от верха на размер хедера
 
-//                delegate: RowLayout{
-//                               width: _taskManagerModelView.width
-////                               CheckBox{
-////                                   checked: model.done
-////                                   onCheckedChanged: model.done = checked
-////                               }
-//                               TextField{
-//                                   text: display
-//                                   verticalAlignment: Text.AlignVCenter
-//                                   horizontalAlignment: Text.AlignHCenter
-//                                   Layout.fillWidth: true
-////                                   onEditingFinished: model.description = text
-//                               }
+                ScrollBar.horizontal: ScrollBar{}
+                ScrollBar.vertical: ScrollBar{}
+                ScrollIndicator.horizontal: ScrollIndicator { }
+                ScrollIndicator.vertical: ScrollIndicator { }
 
-//                delegate:  Rectangle {
-//                    implicitWidth: 215
-//                    implicitHeight: 30
-//                    color: "gray"
-//                    border.color: "black"
-//                    Text {
-//                        text: display
-//                        verticalAlignment: Text.AlignVCenter
-//                        horizontalAlignment: Text.AlignHCenter
-//                    }
+                onWidthChanged: _taskManagerModelView.forceLayout()
+                columnWidthProvider: function (column) { //подгоняет ширину столбцов по ширине вьюшки
+                            return _taskManagerModelView.model ? _taskManagerModelView.width/_taskManagerModelView.model.columnCount() : 0
+                        }
+
+                rowHeightProvider: function (Row) { //подгоняет высоту столбцов
+                    return textId.height
+                }
+
+                delegate: Rectangle {
+                    border{
+                        color: 'black'
+                        width: 1
+                    }
+                    color: "#dfd6b9"
+                    Text {
+                        id: textId
+                        text: display
+                        anchors.fill: parent
+                        anchors.margins: 10
+                        color: 'black'
+                        font.pixelSize: 16
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        wrapMode: Text.WordWrap //перенос строки
+                        onContentHeightChanged: {
+                            textId.height = contentHeight
+                    //        console.log(textId.height)
+                        }
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            console.log("proba:" + textId.text)
+                        }
+                    }
+                }
+
+//                Rectangle { // mask the headers
+//                    z: 3
+//                    color: "#000033"
+//                    y: _taskManagerModelView.contentY
+//                    x: _taskManagerModelView.contentX
+//                    width: _taskManagerModelView.leftMargin
+//                    height: _taskManagerModelView.topMargin
 //                }
-            }
-        }
 
+                Row {
+                    id: _columnsHeader
+                    y: _taskManagerModelView.contentY
+                    z: 2
+                    Repeater {
+                        model: _taskManagerModelView.columns > 0 ? _taskManagerModelView.columns : 1
+                        Label {
+                            width: _backRect.width/_taskManagerModelView.columns
+                            height: 35
+                            text: _taskManagerModel.headerData(modelData, Qt.Horizontal)
+                            color: 'black'
 
-        Rectangle{
-            height: 20
-            Layout.row: 1
-            Layout.column: 0
-            Text {
-                text: "<b>Наименование задачи<b>"
-                font.pointSize: 10
-            }
-        }
-        Rectangle{
-            height: 20
-            Layout.row: 1
-            Layout.column: 1
-            Text {
-                text: "<b>Дата завершения<b>"
-                font.pointSize: 10
-            }
-        }
-        Rectangle{
-            height: 20
-            Layout.row: 1
-            Layout.column: 2
-            Text {
-                text: "<b>Прогресс (0-10)<b>"
-                font.pointSize: 10
-            }
-        }
+                            font.pixelSize: 15
+                            padding: 10
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            background: Rectangle {
+                                radius: 5
+                               // color: "#dfd6b9"
+                            }
+                        }
+                    }
+                }
 
+            }
+        }
 
 
         TextField{
@@ -176,12 +204,12 @@ ApplicationWindow  {
                 width: 40
                 height: 40
                 onClicked: {
-                    _taskManagerModel.add(_txtTaskName.text, _txtDeadLine.text, _sbProgress.displayText)
-                    //  1 способ через Q_INVOKABLE
-                    //     _TaskManager.writeFile(_txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText)
-                    //  2 способ через Q_PROPERTY - добавление свойства
-                    if(_txtTaskName.text) { //проверим, если имя задачи введено - сохраним ее в файл
+               //    console.log("Длина даты: " + _txtDeadLine.text.length)
+                    if(_txtTaskName.text.length != 0 &&
+                            _txtDeadLine.text.length == 10 &&
+                            _sbProgress.displayText.length != 0) { //проверим, если имя задачи введено - сохраним ее в файл
                         _TaskManager.Write = _txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText
+                        _taskManagerModel.addObject(_txtTaskName.text, _txtDeadLine.text, _sbProgress.displayText)
                     }
                 }
             }
@@ -198,9 +226,6 @@ ApplicationWindow  {
                     Qt.quit() //пока что так, чтобы не пустовала
                 }
             }
-
-
-
         }
     }
 
