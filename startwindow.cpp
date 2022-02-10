@@ -6,8 +6,8 @@ startWindow::startWindow(QWidget *parent)
     mainGrid = new QGridLayout(this);
 
     buttonOne = new QPushButton(this);
-//    buttonTwo = new QPushButton(this);
-//    buttonThree = new QPushButton(this);
+//    buttonTwo = new QPushButton;
+//    buttonThree = new QPushButton;
 
     exp = new Explorer(this);
 
@@ -21,8 +21,8 @@ startWindow::startWindow(QWidget *parent)
 
     connect(buttonOne, &QPushButton::clicked, this, &startWindow::buttonOne_clicked);
 
-//    connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
-//    connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
+//    QObject::connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
+//    QObject::connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
 
     exp->setWindowFlags(Qt::Window);
     this->setLayout(mainGrid);

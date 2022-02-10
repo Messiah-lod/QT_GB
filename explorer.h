@@ -13,6 +13,13 @@
 #include <QFileSystemModel>
 #include <QMessageBox>
 #include <QLabel>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QSplitter>
+#include <QtConcurrent>
+#include <QFuture>
+
+#include "serchfiles.h"
 
 Q_PROPERTY(QStandardItemModel *model READ getCurrentModel WRITE setNewModel)
 
@@ -27,10 +34,18 @@ private:
        QTreeView *tree;
        QFileSystemModel *model;
        QLabel *lbl;
+       QLineEdit *edit;
+       QPushButton *search;
+       QListWidget *result;
+       QSplitter *splitter;
 
+
+
+       QString path;
 public slots:
        void on_tree_clicked(const QModelIndex &index);
-
+       void on_search_clicked();
+       void addSerchFile(QString pathFile);
 protected:
 
 
