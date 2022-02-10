@@ -3,32 +3,34 @@
 startWindow::startWindow(QWidget *parent)
     : QWidget(parent)
 {
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
 
-    buttonOne = new QPushButton;
-    buttonTwo = new QPushButton;
-    buttonThree = new QPushButton;
+    buttonOne = new QPushButton(this);
+//    buttonTwo = new QPushButton(this);
+//    buttonThree = new QPushButton(this);
 
-    buttonOne->setText("Задание 1");
-    buttonTwo->setText("Задание 2");
-    buttonThree->setText("Задание 3");
+    exp = new Explorer(this);
+
+    buttonOne->setText("Файловая система");
+//    buttonTwo->setText("Задание 2");
+//    buttonThree->setText("Задание 3");
 
     mainGrid->addWidget(buttonOne, 1, 1, 1, 1);
-    mainGrid->addWidget(buttonTwo, 3,1,1,1);
-    mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
+//    mainGrid->addWidget(buttonTwo, 3,1,1,1);
+//    mainGrid->addWidget(buttonThree, 5, 1, 1, 1);
 
-    QObject::connect(buttonOne, SIGNAL(clicked()), this, SLOT(buttonOne_clicked()));
-    QObject::connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
-    QObject::connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
+    connect(buttonOne, &QPushButton::clicked, this, &startWindow::buttonOne_clicked);
 
+//    connect(buttonTwo, SIGNAL(clicked()), this, SLOT(buttonTwo_clicked()));
+//    connect(buttonThree, SIGNAL(clicked()), this, SLOT(buttonThree_clicked()));
+
+    exp->setWindowFlags(Qt::Window);
     this->setLayout(mainGrid);
 }
 
 void startWindow::buttonOne_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setText("Задание 1");
-    msgBox.exec();
+    exp->show();
 }
 
 void startWindow::buttonTwo_clicked()

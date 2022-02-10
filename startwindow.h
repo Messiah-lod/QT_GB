@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QMessageBox>
 
+#include "explorer.h"
+
 class startWindow : public QWidget
 {
     Q_OBJECT
@@ -14,8 +16,10 @@ public:
 
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
     QPushButton *buttonOne;
-    QPushButton *buttonTwo;
-    QPushButton *buttonThree;
+//    QPushButton *buttonTwo;
+//    QPushButton *buttonThree;
+
+    Explorer *exp;
 
 
  public slots:
