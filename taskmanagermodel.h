@@ -8,23 +8,21 @@
 #include <QVector>
 #include <QVariantList>
 #include <QTextCodec>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlDatabase>
+#include <QSqlTableModel>
+#include <QSqlError>
 
-class TaskManagerModel : public QAbstractTableModel
+class TaskManagerModel : public QSqlTableModel
 {
     Q_OBJECT
 
 public:
     explicit TaskManagerModel(QObject *parent = nullptr);
-
-    Q_INVOKABLE QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
     ~TaskManagerModel() override;
 
     Q_INVOKABLE void addObject(QString _name, QString _deadLine, QString _progress);
-    Q_INVOKABLE void addObject(QByteArray _parametr);
+    Q_INVOKABLE void addObjectFromBD();
     Q_INVOKABLE void delObject(const QModelIndex & index);
     Q_INVOKABLE void delData();
 
@@ -34,13 +32,7 @@ signals:
 public slots:
 
 private:
-    struct rowData{
-      QString nameTask = "";
-      QString deadLine = "";
-      QString progress = "";
-    };
-
-    QVector <rowData> *modelData;
+    QSqlDatabase database;
 };
 
 #endif // TASKMANAGERMODEL_H

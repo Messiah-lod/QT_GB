@@ -3,7 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import Qt.labs.qmlmodels 1.0
-import TaskManager 1.0
+
 import TaskManagerModel 1.0
 
 
@@ -30,13 +30,9 @@ ApplicationWindow  {
         anchors.fill: parent
     }
 
-    TaskManager {
-        id: _TaskManager
-    }
-
     function startupFunction() {
         //Выполняем подгрузку всех данных из файла
-        _taskManagerModel.addObject(_TaskManager.readFile())
+        _taskManagerModel.addObjectFromBD()
     }
 
     GridLayout  {
@@ -83,14 +79,16 @@ ApplicationWindow  {
                 }
 
                 delegate: Rectangle {
+                    id: _fon
                     border{
                         color: 'black'
                         width: 1
                     }
                     color: "#dfd6b9"
-                    Text {
+                    TextEdit {
                         id: textId
                         text: display
+                        focus: true
                         anchors.fill: parent
                         anchors.margins: 10
                         color: 'black'
@@ -108,18 +106,12 @@ ApplicationWindow  {
                         anchors.fill: parent
                         onClicked: {
                             console.log("proba:" + textId.text)
+
                         }
+                        onPressed: _fon.color = "#0da8db"
+                        onReleased: _fon.color = "#dfd6b9"
                     }
                 }
-
-//                Rectangle { // mask the headers
-//                    z: 3
-//                    color: "#000033"
-//                    y: _taskManagerModelView.contentY
-//                    x: _taskManagerModelView.contentX
-//                    width: _taskManagerModelView.leftMargin
-//                    height: _taskManagerModelView.topMargin
-//                }
 
                 Row {
                     id: _columnsHeader
@@ -208,8 +200,11 @@ ApplicationWindow  {
                     if(_txtTaskName.text.length != 0 &&
                             _txtDeadLine.text.length == 10 &&
                             _sbProgress.displayText.length != 0) { //проверим, если имя задачи введено - сохраним ее в файл
-                        _TaskManager.Write = _txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText
+                        //_TaskManager.Write = _txtTaskName.text + ";;" + _txtDeadLine.text + ";;" + _sbProgress.displayText
                         _taskManagerModel.addObject(_txtTaskName.text, _txtDeadLine.text, _sbProgress.displayText)
+                        _txtTaskName.clear()
+                        _txtDeadLine.clear()
+                        _sbProgress.value = 0
                     }
                 }
             }
