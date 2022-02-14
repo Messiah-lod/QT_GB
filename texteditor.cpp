@@ -10,25 +10,25 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
 //    tabArea->setDocumentMode(true); //????? покурить различия
 
     //Диалог выхода из программы
-    messExit = new QMessageBox();
-    yes = new QPushButton();
+    messExit = new QMessageBox(this);
+    yes = new QPushButton(this);
     messExit->addButton(yes, QMessageBox::YesRole);
-    no = new QPushButton();
+    no = new QPushButton(this);
     messExit->addButton(no, QMessageBox::NoRole);
 
 
-    messTabClose = new QMessageBox();
-    yesClose = new QPushButton();
-    noClose = new QPushButton();
+    messTabClose = new QMessageBox(this);
+    yesClose = new QPushButton(this);
+    noClose = new QPushButton(this);
     messTabClose->addButton(yesClose, QMessageBox::YesRole);
     messTabClose->addButton(noClose, QMessageBox::NoRole);
 
-    mainGrid = new QGridLayout;
-    centralWgt = new QWidget;
+    mainGrid = new QGridLayout(this);
+    centralWgt = new QWidget(this);
     openReadAct = new QAction(this);
     actionFileOpen = new QAction(this);
 
-    buttonOpen = new QToolButton;
+    buttonOpen = new QToolButton(this);
     buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
     buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonOpen->setPopupMode(QToolButton::MenuButtonPopup);
@@ -36,19 +36,19 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     buttonOpen->addAction(openReadAct);
     buttonOpen->setFixedSize(46, 30);
 
-    buttonSave = new QPushButton;
+    buttonSave = new QPushButton(this);
     buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
     buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    buttonPrint = new QPushButton;
+    buttonPrint = new QPushButton(this);
     buttonPrint->setIcon(QIcon(":/Icons/Icons/print.png"));
     buttonPrint->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    buttonHelp = new QPushButton;
+    buttonHelp = new QPushButton(this);
     buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
     buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    buttonSettings = new QPushButton;
+    buttonSettings = new QPushButton(this);
     buttonSettings->setIcon(QIcon(":/Icons/Icons/setings.png"));
     buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -119,33 +119,35 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
 //***************
 
 
-    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
-    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
-    QObject::connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
-    QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
-    QObject::connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
-    QObject::connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
-    QObject::connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
+    connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
+    connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
+    connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
+    connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
+    connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
+    connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
+    connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
+    connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
 
-    QObject::connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
-    QObject::connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
-    QObject::connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
-    QObject::connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
-    QObject::connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
-    QObject::connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
-    QObject::connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
+    connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
+    connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
+    connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
+    connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
+    connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+    connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
+    connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
+    connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
 
-    QObject::connect(tabArea, SIGNAL(currentChanged(int)), this, SLOT(changeTabArea())); //активна новая вкладка
-    QObject::connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabArea(int)));//нажата кнопка закрытия вкладки
+    connect(tabArea, SIGNAL(currentChanged(int)), this, SLOT(changeTabArea())); //активна новая вкладка
+    connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabArea(int)));//нажата кнопка закрытия вкладки
 
     retranslateUI();
     redrawUI(setting->getQss(), setting->getPalette());
+
+//    on_buttonCreateNew_clicked();
 }
 
 void TextEditor::closeEvent(QCloseEvent *event)
@@ -184,41 +186,40 @@ void TextEditor::keyPressEvent(QKeyEvent *event)
 }
 
 void TextEditor::on_buttonOpen_clicked(){
-    QPlainTextEdit *textEdit = new QPlainTextEdit;
+    QPlainTextEdit *textEdit = new QPlainTextEdit(this);
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
-    QObject::connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
 
     //проверка, были ли изменения на старой вкладке, чтобы не ставилась лишняя '*'
-    bool isCahngeCurrentTab = false;
-    int currentTab = tabArea->currentIndex();
-    if(tabArea->tabText(currentTab)[0] == '*') isCahngeCurrentTab = true;
+    //    bool isCahngeCurrentTab = false;
+    //    int currentTab = tabArea->currentIndex();
+    //    if(tabArea->count() != 0 && tabArea->tabText(currentTab)[0] == '*') isCahngeCurrentTab = true;
 
     QString fileName;
-        try	{
-            fileName = QFileDialog::getOpenFileName(this,
-                tr("Open file"), QDir::currentPath(), "Files (*.* ALL)");
-        }
-        catch (const std::exception&){
-                fileName = "";
-        }
 
-        if (!fileName.isEmpty()){
-            QFile file(fileName);
-            QByteArray data; // Создаем объект класса QByteArray, куда мы будем считывать данные
-            if (!file.open(QIODevice::ReadOnly)) // Проверяем, возможно ли открыть наш файл для чтения
-                            return;
-            data = file.readAll(); //считываем все данные с файла в объект data
-            textEdit->setPlainText(data);
-            QFileInfo fileInfo(fileName);
-            int newTab = tabArea->addTab(textEdit, fileInfo.fileName());
-            tabArea->setTabToolTip(newTab, fileName);
-            tabArea->setCurrentIndex(newTab);
-        }
-        setOnlyReadText = false;
+    fileName = QFileDialog::getOpenFileName(this,
+                                            tr("Open file"), QDir::currentPath(), "Files (*.* ALL)");
 
-        if(!isCahngeCurrentTab) //выполним затирание лишнего символа, если не было изменений
-            tabArea->setTabText(currentTab, tabArea->tabText(currentTab).remove(0,1));
+    if (fileName.isEmpty())   return;
+
+    QFile file(fileName);
+    QByteArray data; // Создаем объект класса QByteArray, куда мы будем считывать данные
+    if (!file.open(QIODevice::ReadOnly)) // Проверяем, возможно ли открыть наш файл для чтения
+        return;
+    data = file.readAll(); //считываем все данные с файла в объект data
+    QFileInfo fileInfo(fileName);
+    int newTab = tabArea->addTab(textEdit, fileInfo.fileName());
+    tabArea->setTabToolTip(newTab, fileName);
+    tabArea->setCurrentIndex(newTab);
+    textEdit->setPlainText(data);
+    tabArea->setTabText(newTab, tabArea->tabText(newTab).remove(0,1));
+
+
+    //    if(!isCahngeCurrentTab) //выполним затирание лишнего символа, если не было изменений
+    //        tabArea->setTabText(currentTab, tabArea->tabText(currentTab).remove(0,1));
+
+    setOnlyReadText = false;
 }
 
 void TextEditor::on_buttonSave_clicked(){
@@ -250,7 +251,7 @@ void TextEditor::on_buttonSave_clicked(){
 
 void TextEditor::on_buttonHelp_clicked(){
     QFile file(":/Txt/readme.txt");
-    file.open(QIODevice::ReadOnly);
+    if(!file.open(QIODevice::ReadOnly)) return;
     QString info = file.readAll();
 
     QMessageBox::information(nullptr, tr("Help"),info);
@@ -269,7 +270,7 @@ void TextEditor::on_buttonOpenOnlyRead_clicked()
 
 void TextEditor::on_buttonCreateNew_clicked()
 {
-    QPlainTextEdit *textEdit = new QPlainTextEdit;
+    QPlainTextEdit *textEdit = new QPlainTextEdit(this);
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
     textEdit->setToolTip("");
@@ -392,7 +393,6 @@ void TextEditor::changeTabArea()
         QPlainTextEdit *textEditor = static_cast<QPlainTextEdit*>(widg);
         find->setTextEdit(textEditor);
     }
-//    QMessageBox::information(this, "rfrf", "rfrf");
 }
 
 void TextEditor::closeTabArea(int _tab)
@@ -401,7 +401,6 @@ void TextEditor::closeTabArea(int _tab)
         messTabClose->setIcon(QMessageBox::Information);
         messTabClose->exec();
         if (messTabClose->clickedButton() == yesClose){
-//            QMessageBox::information(this, "rfrf", "rfrf");
             on_buttonSave_clicked(); //если был текст изменне - предложим сохранить
         }
     }

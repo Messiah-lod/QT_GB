@@ -35,8 +35,8 @@ void FineDialog::setTextEdit(QPlainTextEdit *_textEdit)
 void FineDialog::findPrev()
 {
    QString str = lineEdit->text();
-   int pos = textEdit->textCursor().position(); // Получаем позицию курсора
-   QString txt = textEdit->toPlainText();       // Получаем текст
+   int pos = textEdit->textCursor().position();
+   QString txt = textEdit->toPlainText();
    if (txt.size() == 0 || str.size() == 0) return;
    QString p = txt.mid(0, pos);                 // Копируем текст от начала до курсора
    int last = -1;                               // Последний индекс с текстом
