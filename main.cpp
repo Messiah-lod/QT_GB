@@ -1,14 +1,16 @@
-#include "startwindow.h"
+
+#include "texteditor.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    startWindow w;
-    w.setMinimumHeight(100);
-    w.setMinimumWidth(200);
-    w.setMaximumHeight(200);
-    w.setMaximumWidth(400);
+    a.setStyle(QStyleFactory::create("fusion"));
+    a.setWindowIcon(QIcon(":/Icons/Icons/main.png"));
+
+    TextEditor w;
+    w.setMinimumHeight(200);
+    w.setMinimumWidth(300);
     w.show();
 
     return a.exec();
