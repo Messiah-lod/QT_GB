@@ -25,11 +25,11 @@ class FineDialog : public QDialog
        void findNext();
        void retranslateUI();
     private:
-       QTextEdit *textEdit;
-       QGridLayout *layout;
-       QLabel *label;
-       QLineEdit *lineEdit;              // Строка для ввода строки поиска
-       QPushButton *findButtons[2];      // 2 кнопки поиска
+       QTextEdit *textEdit {nullptr};
+       QGridLayout *layout {nullptr};
+       QLabel *label {nullptr};
+       QLineEdit *lineEdit {nullptr};              // Строка для ввода строки поиска
+       QPushButton *findButtons[2]  {nullptr};      // 2 кнопки поиска
     signals:
        void setCursorPos(int, int, int); // Сигнал с указанием выделения текста и новой позиции курсора. Начало, длина, новая позиция
 };

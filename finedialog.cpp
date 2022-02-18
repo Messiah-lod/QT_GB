@@ -5,7 +5,7 @@ FineDialog::FineDialog(QWidget *parent) : QDialog(parent),
 {
 
    setFixedSize(300, 100);
-   layout = new QGridLayout();
+   layout = new QGridLayout(this);
    setLayout(layout);
    label = new QLabel(this);
    layout->addWidget(label, 1, 1, 1, 4);

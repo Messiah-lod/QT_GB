@@ -8,21 +8,21 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     tabArea->setUsesScrollButtons(true);
 
     //Диалог выхода из программы
-    messExit = new QMessageBox();
-    yes = new QPushButton();
+    messExit = new QMessageBox(this);
+    yes = new QPushButton(this);
     messExit->addButton(yes, QMessageBox::YesRole);
-    no = new QPushButton();
+    no = new QPushButton(this);
     messExit->addButton(no, QMessageBox::NoRole);
 
-    messTabClose = new QMessageBox();
-    yesClose = new QPushButton();
-    noClose = new QPushButton();
+    messTabClose = new QMessageBox(this);
+    yesClose = new QPushButton(this);
+    noClose = new QPushButton(this);
     messTabClose->addButton(yesClose, QMessageBox::YesRole);
     messTabClose->addButton(noClose, QMessageBox::NoRole);
 
-    mainGrid = new QGridLayout;
+    mainGrid = new QGridLayout(this);
     mainGrid->setContentsMargins(0,0,0,0);
-    centralWgt = new QWidget;
+    centralWgt = new QWidget(this);
     mainGrid->addWidget(tabArea, 0, 0, 1, 6);
 
 
@@ -50,15 +50,15 @@ TextEditor::TextEditor(QWidget *parent) : QMainWindow(parent)
     createMenu(); //Create MENU
 
 
-    QObject::connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
-    QObject::connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
-    QObject::connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
-    QObject::connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
+    connect(setting, SIGNAL(retranslate()), this, SLOT(retranslateUI()));
+    connect(setting, SIGNAL(redraw(QString, QPalette)), this, SLOT(redrawUI(QString, QPalette)));
+    connect(setting, SIGNAL(signal_changeOpen(unsigned int, int)), this, SLOT(swtHotKeyOpen(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeSave(unsigned int, int)), this, SLOT(swtHotKeySave(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeClear(unsigned int, int)), this, SLOT(swtHotKeyClear(unsigned int, int)));
+    connect(setting, SIGNAL(signal_changeExit(unsigned int, int)), this, SLOT(swtHotKeyExit(unsigned int, int)));
 
-    QObject::connect(tabArea, SIGNAL(currentChanged(int)), this, SLOT(changeTabArea())); //активна новая вкладка
-    QObject::connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabArea(int)));//нажата кнопка закрытия вкладки
+    connect(tabArea, SIGNAL(currentChanged(int)), this, SLOT(changeTabArea())); //активна новая вкладка
+    connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabArea(int)));//нажата кнопка закрытия вкладки
 
     retranslateUI();
     redrawUI(setting->getQss(), setting->getPalette());
@@ -81,7 +81,7 @@ void TextEditor::closeEvent(QCloseEvent *event)
 
 void TextEditor::createButton()
 {
-    buttonOpen = new QToolButton;
+    buttonOpen = new QToolButton(this);
     buttonOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
     buttonOpen->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     buttonOpen->setPopupMode(QToolButton::MenuButtonPopup);
@@ -90,53 +90,53 @@ void TextEditor::createButton()
     buttonOpen->addAction(actionFileOpen);
     buttonOpen->addAction(openReadAct);
     buttonOpen->setFixedSize(46, 30);
-    QObject::connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
-    QObject::connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
+    connect(buttonOpen, SIGNAL(clicked()), this, SLOT(on_buttonOpen_clicked()));
+    connect(openReadAct, SIGNAL(triggered()), this, SLOT(on_buttonOpenOnlyRead_clicked()));
 
-    buttonSave = new QPushButton;
+    buttonSave = new QPushButton(this);
     buttonSave->setIcon(QIcon(":/Icons/Icons/save.png"));
     buttonSave->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(on_buttonSave_clicked()));
 
-    buttonPrint = new QPushButton;
+    buttonPrint = new QPushButton(this);
     buttonPrint->setIcon(QIcon(":/Icons/Icons/print.png"));
     buttonPrint->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
+    connect(buttonPrint, SIGNAL(clicked()), this, SLOT(on_actionFilePrint_clicked()));
 
-    buttonHelp = new QPushButton;
+    buttonHelp = new QPushButton(this);
     buttonHelp->setIcon(QIcon(":/Icons/Icons/help.png"));
     buttonHelp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
+    connect(buttonHelp, SIGNAL(clicked()), this, SLOT(on_buttonHelp_clicked()));
 
-    buttonSettings = new QPushButton;
+    buttonSettings = new QPushButton(this);
     buttonSettings->setIcon(QIcon(":/Icons/Icons/setings.png"));
     buttonSettings->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
+    connect(buttonSettings, SIGNAL(clicked()), this, SLOT(on_buttonSettings_clicked()));
 
-    actionTextSelect = new QPushButton;
+    actionTextSelect = new QPushButton(this);
     actionTextSelect->setIcon(QIcon(":/Icons/Icons/031-type.png"));
     actionTextSelect->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(actionTextSelect, SIGNAL(clicked()), this, SLOT(on_actionTextSelect_clicked()));
+    connect(actionTextSelect, SIGNAL(clicked()), this, SLOT(on_actionTextSelect_clicked()));
 
-    actionTextFormat = new QPushButton;
+    actionTextFormat = new QPushButton(this);
     actionTextFormat->setIcon(QIcon(":/Icons/Icons/061-highlighter.png"));
     actionTextFormat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(actionTextFormat, SIGNAL(clicked()), this, SLOT(on_actionTextFormat_clicked()));
+    connect(actionTextFormat, SIGNAL(clicked()), this, SLOT(on_actionTextFormat_clicked()));
 
-    actionTextLeft = new QPushButton;
+    actionTextLeft = new QPushButton(this);
     actionTextLeft->setIcon(QIcon(":/Icons/Icons/045-align-left-1.png"));
     actionTextLeft->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(actionTextLeft, SIGNAL(clicked()), this, SLOT(on_actionTextLeft_clicked()));
+    connect(actionTextLeft, SIGNAL(clicked()), this, SLOT(on_actionTextLeft_clicked()));
 
-    actionTextCentre = new QPushButton;
+    actionTextCentre = new QPushButton(this);
     actionTextCentre->setIcon(QIcon(":/Icons/Icons/046-align-center-1.png"));
     actionTextCentre->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(actionTextCentre, SIGNAL(clicked()), this, SLOT(on_actionTextCentre_clicked()));
+    connect(actionTextCentre, SIGNAL(clicked()), this, SLOT(on_actionTextCentre_clicked()));
 
-    actionTextRight = new QPushButton;
+    actionTextRight = new QPushButton(this);
     actionTextRight->setIcon(QIcon(":/Icons/Icons/047-right-alignment-1.png"));
     actionTextRight->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(actionTextRight, SIGNAL(clicked()), this, SLOT(on_actionTextRight_clicked()));
+    connect(actionTextRight, SIGNAL(clicked()), this, SLOT(on_actionTextRight_clicked()));
 }
 
 void TextEditor::createMenu()
@@ -150,34 +150,34 @@ void TextEditor::createMenu()
 
         actionFileCreate = new QAction(this);
         actionFileCreate->setIcon(QIcon(":/Icons/Icons/main.png"));
-        QObject::connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
+        connect(actionFileCreate, SIGNAL(triggered(bool)), this, SLOT(on_buttonCreateNew_clicked()));
 
         actionFileOpen->setIcon(QIcon(":/Icons/Icons/open.png"));
-        QObject::connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
+        connect(actionFileOpen, SIGNAL(triggered(bool)), this, SLOT(on_buttonOpen_clicked()));
 
         actionFileSave = new QAction(this);
         actionFileSave->setIcon(QIcon(":/Icons/Icons/save.png"));
-        QObject::connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
+        connect(actionFileSave, SIGNAL(triggered(bool)), this, SLOT(on_buttonSave_clicked()));
 
         actionFilePrint = new QAction(this);
         actionFilePrint->setIcon(QIcon(":/Icons/Icons/print.png"));
-        QObject::connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
+        connect(actionFilePrint, SIGNAL(triggered(bool)), this, SLOT(on_actionFilePrint_clicked()));
 
         actionFileExit = new QAction(this);
         actionFileExit->setIcon(QIcon(":/Icons/Icons/cancel.png"));
-        QObject::connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+        connect(actionFileExit, SIGNAL(triggered(bool)), this, SLOT(close()));
 
         actionEditSetings = new QAction(this);
         actionEditSetings->setIcon(QIcon(":/Icons/Icons/setings.png"));
-        QObject::connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
+        connect(actionEditSetings, SIGNAL(triggered(bool)), this, SLOT(on_buttonSettings_clicked()));
 
         actionEditFind = new QAction(this);
         actionEditFind->setIcon(QIcon(":/Icons/Icons/find.png"));
-        QObject::connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
+        connect(actionEditFind, SIGNAL(triggered(bool)), this, SLOT(findText()));
 
         actionHelpAbout = new QAction(this);
         actionHelpAbout->setIcon(QIcon(":/Icons/Icons/help.png"));
-        QObject::connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
+        connect(actionHelpAbout, SIGNAL(triggered(bool)), this, SLOT(on_buttonHelp_clicked()));
 
         menubar->addAction(fileMenu->menuAction());
         menubar->addAction(editMenu->menuAction());
@@ -195,14 +195,14 @@ void TextEditor::createMenu()
 
         this->setMenuBar(menubar);
 
-        fileToolBar = new QToolBar;
+        fileToolBar = new QToolBar(this);
         this->addToolBar(fileToolBar);
         fileToolBar->setOrientation(Qt::Horizontal);
         fileToolBar->addWidget(buttonOpen);
         fileToolBar->addWidget(buttonSave);
         fileToolBar->addWidget(buttonPrint);
 
-        formatTextToolBar = new QToolBar;
+        formatTextToolBar = new QToolBar(this);
         this->addToolBar(formatTextToolBar);
         formatTextToolBar->addWidget(actionTextSelect);
         formatTextToolBar->addWidget(actionTextFormat);
@@ -210,7 +210,7 @@ void TextEditor::createMenu()
         formatTextToolBar->addWidget(actionTextCentre);
         formatTextToolBar->addWidget(actionTextRight);
 
-        aboutToolBar = new QToolBar;
+        aboutToolBar = new QToolBar(this);
         this->addToolBar(aboutToolBar);
         aboutToolBar->addWidget(buttonSettings);
         aboutToolBar->addWidget(buttonHelp);
@@ -237,43 +237,41 @@ void TextEditor::keyPressEvent(QKeyEvent *event)
 }
 
 void TextEditor::on_buttonOpen_clicked(){
-    QTextEdit *textEdit = new QTextEdit;
+    QTextEdit *textEdit = new QTextEdit(this);
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
-    QObject::connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
-    QObject::connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
-    QObject::connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(planeMoveCursor()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
+    connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
+    connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(planeMoveCursor()));
 
-    //проверка, были ли изменения на старой вкладке, чтобы не ставилась лишняя '*'
-    bool isCahngeCurrentTab = false;
-    int currentTab = tabArea->currentIndex();
-    if(tabArea->tabText(currentTab)[0] == '*') isCahngeCurrentTab = true;
+//    //проверка, были ли изменения на старой вкладке, чтобы не ставилась лишняя '*'
+//    bool isCahngeCurrentTab = false;
+//    int currentTab = tabArea->currentIndex();
+//    if(tabArea->tabText(currentTab)[0] == '*') isCahngeCurrentTab = true;
 
     QString fileName;
-        try	{
-            fileName = QFileDialog::getOpenFileName(this,
-                tr("Open file"), QDir::currentPath(), "Files (*.* ALL)");
-        }
-        catch (const std::exception&){
-                fileName = "";
-        }
 
-        if (!fileName.isEmpty()){
-            QFile file(fileName);
-            QByteArray data; // Создаем объект класса QByteArray, куда мы будем считывать данные
-            if (!file.open(QIODevice::ReadOnly)) // Проверяем, возможно ли открыть наш файл для чтения
-                            return;
-            data = file.readAll(); //считываем все данные с файла в объект data
-            textEdit->setPlainText(data);
-            QFileInfo fileInfo(fileName);
-            int newTab = tabArea->addTab(textEdit, fileInfo.fileName());
-            tabArea->setTabToolTip(newTab, fileName);
-            tabArea->setCurrentIndex(newTab);
-        }
-        setOnlyReadText = false;
+    fileName = QFileDialog::getOpenFileName(this,
+                                            tr("Open file"), QDir::currentPath(), "Files (*.* ALL)");
 
-        if(!isCahngeCurrentTab) //выполним затирание лишнего символа, если не было изменений
-            tabArea->setTabText(currentTab, tabArea->tabText(currentTab).remove(0,1));
+    if (fileName.isEmpty()) return;
+
+    QFile file(fileName);
+    QByteArray data; // Создаем объект класса QByteArray, куда мы будем считывать данные
+    if (!file.open(QIODevice::ReadOnly)) // Проверяем, возможно ли открыть наш файл для чтения
+        return;
+    data = file.readAll(); //считываем все данные с файла в объект data
+    QFileInfo fileInfo(fileName);
+    int newTab = tabArea->addTab(textEdit, fileInfo.fileName());
+    tabArea->setTabToolTip(newTab, fileName);
+    tabArea->setCurrentIndex(newTab);
+    textEdit->setPlainText(data);
+    tabArea->setTabText(newTab, tabArea->tabText(newTab).remove(0,1));
+
+    setOnlyReadText = false;
+
+//        if(!isCahngeCurrentTab) //выполним затирание лишнего символа, если не было изменений
+//            tabArea->setTabText(currentTab, tabArea->tabText(currentTab).remove(0,1));
 }
 
 void TextEditor::on_buttonSave_clicked(){
@@ -324,14 +322,14 @@ void TextEditor::on_buttonOpenOnlyRead_clicked()
 
 void TextEditor::on_buttonCreateNew_clicked()
 {
-    QTextEdit *textEdit = new QTextEdit;
+    QTextEdit *textEdit = new QTextEdit(this);
     textEdit->setReadOnly(setOnlyReadText);
     textEdit->setPlainText("");
     textEdit->setToolTip("");
     int newTab = tabArea->addTab(textEdit, "*unknown");
     tabArea->setCurrentIndex(newTab);
-    QObject::connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
-    QObject::connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(planeTxtChange()));
+    connect(textEdit, SIGNAL(copyAvailable(bool)), this, SLOT(planeSelectionChange(bool)));
 }
 
 void TextEditor::retranslateUI()
@@ -420,7 +418,7 @@ void TextEditor::findText()
     QWidget *widg = tabArea->currentWidget();
     QTextEdit *textEditor = static_cast<QTextEdit*>(widg);
     find->setTextEdit(textEditor); //передадим весь текст в поиск
-    QObject::connect(find, SIGNAL(setCursorPos(int, int, int)), this, SLOT(setNewPosition(int, int, int)));   // Соединяем сигнал  от диалогового окна к слоту
+    connect(find, SIGNAL(setCursorPos(int, int, int)), this, SLOT(setNewPosition(int, int, int)));   // Соединяем сигнал  от диалогового окна к слоту
     find->show();              // Запускаем диалог без блокировки главного окна
 }
 

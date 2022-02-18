@@ -17,12 +17,12 @@ public:
     QPalette getPalette();
 
 private:
-        QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
+        QGridLayout *mainGrid {nullptr}; //создаем грид, который кладем на вкладку
 
-        QCheckBox *cbDark;
-        QCheckBox *cbLanguage;
-        QLabel *lbDark;
-        QLabel *lbLanguage;
+        QCheckBox *cbDark {nullptr};
+        QCheckBox *cbLanguage {nullptr};
+        QLabel *lbDark {nullptr};
+        QLabel *lbLanguage {nullptr};
 
         // Создаём палитру для тёмной темы оформления
         QPalette darkPalette;
@@ -31,17 +31,17 @@ private:
         QString qss;
         QString qssDark;
 
-        QTranslator *translator;
-        QTranslator *translatorStandart;
+        QTranslator *translator {nullptr};
+        QTranslator *translatorStandart {nullptr};
 
-        QLabel *lbOpen;
-        QLineEdit *leOpen;
-        QLabel *lbSave;
-        QLineEdit *leSave;
-        QLabel *lbClear;
-        QLineEdit *leClear;
-        QLabel *lbExit;
-        QLineEdit *leExit;
+        QLabel *lbOpen {nullptr};
+        QLineEdit *leOpen {nullptr};
+        QLabel *lbSave {nullptr};
+        QLineEdit *leSave {nullptr};
+        QLabel *lbClear {nullptr};
+        QLineEdit *leClear {nullptr};
+        QLabel *lbExit {nullptr};
+        QLineEdit *leExit {nullptr};
 
         int key, open, save, clear, exit;
         unsigned int modify, modifyOpen, modifySave, modifyClear, modifyExit;

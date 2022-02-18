@@ -24,54 +24,54 @@ private:
     void inline createButton();
     void inline createMenu();
 
-    QWidget *centralWgt;
-    QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
+    QWidget *centralWgt {nullptr};
+    QGridLayout *mainGrid {nullptr}; //создаем грид, который кладем на вкладку
 
-    QToolButton *buttonOpen;
-    QAction *openReadAct;
+    QToolButton *buttonOpen {nullptr};
+    QAction *openReadAct {nullptr};
 
-    QPushButton *buttonSave;
-    QPushButton *buttonPrint;
-    QPushButton *buttonHelp;
-    QPushButton *buttonSettings;
-    QPushButton *actionTextSelect;
-    QPushButton *actionTextFormat;
-    QPushButton *actionTextLeft;
-    QPushButton *actionTextCentre;
-    QPushButton *actionTextRight;
+    QPushButton *buttonSave {nullptr};
+    QPushButton *buttonPrint {nullptr};
+    QPushButton *buttonHelp {nullptr};
+    QPushButton *buttonSettings {nullptr};
+    QPushButton *actionTextSelect {nullptr};
+    QPushButton *actionTextFormat {nullptr};
+    QPushButton *actionTextLeft {nullptr};
+    QPushButton *actionTextCentre {nullptr};
+    QPushButton *actionTextRight {nullptr};
 
-    Settings *setting;
-    FineDialog *find;
+    Settings *setting {nullptr};
+    FineDialog *find {nullptr};
 
-    QMenuBar *menubar;
-    QMenu *fileMenu;
-    QMenu *editMenu;
-    QMenu *helpMenu;
-    QToolBar *fileToolBar;
-    QToolBar *formatTextToolBar;
-    QToolBar *aboutToolBar;
-    QAction *actionFileCreate;
-    QAction *actionFileOpen;
-    QAction *actionFileSave;
-    QAction *actionFilePrint;
-    QAction *actionFileExit;
-    QAction *actionEditFind;
-    QAction *actionEditSetings;
-    QAction *actionHelpAbout;
+    QMenuBar *menubar {nullptr};
+    QMenu *fileMenu {nullptr};
+    QMenu *editMenu {nullptr};
+    QMenu *helpMenu {nullptr};
+    QToolBar *fileToolBar {nullptr};
+    QToolBar *formatTextToolBar {nullptr};
+    QToolBar *aboutToolBar {nullptr};
+    QAction *actionFileCreate {nullptr};
+    QAction *actionFileOpen {nullptr};
+    QAction *actionFileSave {nullptr};
+    QAction *actionFilePrint {nullptr};
+    QAction *actionFileExit {nullptr};
+    QAction *actionEditFind {nullptr};
+    QAction *actionEditSetings {nullptr};
+    QAction *actionHelpAbout {nullptr};
 
     unsigned int modifyOpen , modifySave, modifyClear, modifyExit;
     int open, save, clear, exit;
 
-    QTabWidget *tabArea;
+    QTabWidget *tabArea {nullptr};
 
     bool setOnlyReadText = false;
 
-    QMessageBox *messExit;
-    QPushButton *yes;
-    QPushButton *no;
-    QMessageBox *messTabClose;
-    QPushButton *yesClose;
-    QPushButton *noClose;
+    QMessageBox *messExit {nullptr};
+    QPushButton *yes {nullptr};
+    QPushButton *no {nullptr};
+    QMessageBox *messTabClose {nullptr};
+    QPushButton *yesClose {nullptr};
+    QPushButton *noClose {nullptr};
 
     QFont m_font;
     QTextCharFormat m_fmt;
