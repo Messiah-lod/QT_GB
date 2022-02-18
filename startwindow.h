@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QPushButton>
 #include <QMessageBox>
+#include "graphicseditor.h"
 
 class startWindow : public QWidget
 {
@@ -14,17 +15,18 @@ public:
 
     QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
     QPushButton *buttonOne;
-    QPushButton *buttonTwo;
-    QPushButton *buttonThree;
+//    QPushButton *buttonTwo;
+//    QPushButton *buttonThree;
 
 
  public slots:
 
     void buttonOne_clicked();
-    void buttonTwo_clicked();
-    void buttonThree_clicked();
+//    void buttonTwo_clicked();
+//    void buttonThree_clicked();
 
-
+private:
+    graphicsEditor *gEdit {nullptr};
 
 };
 
