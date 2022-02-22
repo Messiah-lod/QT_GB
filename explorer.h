@@ -30,16 +30,14 @@ public:
     explicit Explorer(QWidget *parent = nullptr);
 
 private:
-       QGridLayout *gridLay;
-       QTreeView *tree;
-       QFileSystemModel *model;
-       QLabel *lbl;
-       QLineEdit *edit;
-       QPushButton *search;
-       QListWidget *result;
-       QSplitter *splitter;
-
-
+       QGridLayout *gridLay {nullptr};
+       QTreeView *tree {nullptr};
+       QFileSystemModel *model {nullptr};
+       QLabel *lbl {nullptr};
+       QLineEdit *edit {nullptr};
+       QPushButton *search {nullptr};
+       QListWidget *result {nullptr};
+       QSplitter *splitter {nullptr};
 
        QString path;
 public slots:

@@ -14,21 +14,15 @@ class startWindow : public QWidget
 public:
     startWindow(QWidget *parent = nullptr);
 
-    QGridLayout *mainGrid; //создаем грид, который кладем на вкладку
-    QPushButton *buttonOne;
-    QPushButton *buttonTwo;
-    QPushButton *buttonThree;
+    QGridLayout *mainGrid {nullptr}; //создаем грид, который кладем на вкладку
+    QPushButton *buttonOne {nullptr};
 
-    Explorer *exp;
+    Explorer *exp {nullptr};
 
 
  public slots:
 
     void buttonOne_clicked();
-    void buttonTwo_clicked();
-    void buttonThree_clicked();
-
-
 
 };
 
