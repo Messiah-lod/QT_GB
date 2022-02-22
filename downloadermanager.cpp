@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QRandomGenerator>
 #include <algorithm>
+#include <iostream>
 
 DownloaderManager::DownloaderManager(QWidget *parent)
     : QWidget{parent}
@@ -42,10 +43,10 @@ void DownloaderManager::parseQuery(const QString path, const int count)
     file.close();
 
     //собираем рандомные номера картинок, чтобы не выводилиь одинаковые разных размеров
-    QRandomGenerator generator;
+    std::srand( time( 0 ) );
     QList<int> list;
     for (int i=0; i < count ;i++ ) {
-        unsigned int value = generator.generate() & (count*10);
+        int value = std::rand() % (count*10);
         list << value;
     }
     std::sort(list.begin(), list.end());
@@ -53,10 +54,10 @@ void DownloaderManager::parseQuery(const QString path, const int count)
 
     long long newPosPix = 0;
     int numberLink = 0;
-    int step = 0;
+
     for (int i = 0;i < count ; i++ ) {
         newPosPix = file_str.indexOf("\"url\":\"", newPosPix) + 7;
-//        qDebug() << "Номер позиции: " + QString::number(newPosPix) + " символ: [" + file_str[newPosPix] + "]";
+        qDebug() << "Номер позиции: " + QString::number(newPosPix) + " символ: [" + file_str[newPosPix] + "]";
         if(newPosPix == -1) return;
         QString urlPixMap;
 
@@ -66,8 +67,7 @@ void DownloaderManager::parseQuery(const QString path, const int count)
         }   while (file_str[newPosPix] != '\"');
 
         if(urlPixMap.indexOf(".jpg") == -1) {i--; continue;}
-        if(numberLink == list[step]) {
-            step++;
+        if(numberLink == list[i]) {
             qDebug() << urlPixMap;
             showPixMap(urlPixMap);
         } else {
