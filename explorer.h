@@ -13,6 +13,13 @@
 #include <QFileSystemModel>
 #include <QMessageBox>
 #include <QLabel>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QSplitter>
+#include <QtConcurrent>
+#include <QFuture>
+
+#include "serchfiles.h"
 
 Q_PROPERTY(QStandardItemModel *model READ getCurrentModel WRITE setNewModel)
 
@@ -23,14 +30,20 @@ public:
     explicit Explorer(QWidget *parent = nullptr);
 
 private:
-       QGridLayout *gridLay;
-       QTreeView *tree;
-       QFileSystemModel *model;
-       QLabel *lbl;
+       QGridLayout *gridLay {nullptr};
+       QTreeView *tree {nullptr};
+       QFileSystemModel *model {nullptr};
+       QLabel *lbl {nullptr};
+       QLineEdit *edit {nullptr};
+       QPushButton *search {nullptr};
+       QListWidget *result {nullptr};
+       QSplitter *splitter {nullptr};
 
+       QString path;
 public slots:
        void on_tree_clicked(const QModelIndex &index);
-
+       void on_search_clicked();
+       void addSerchFile(QString pathFile);
 protected:
 
 
