@@ -6,7 +6,6 @@
 #include "taskmanager.h"
 #include "taskmanagermodel.h"
 
-#include "testclass.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
